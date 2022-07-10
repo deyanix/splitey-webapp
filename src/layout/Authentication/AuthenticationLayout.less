@@ -1,0 +1,19 @@
+@authentication-background: #edeff1;
+@authentication-background-content: #ffffff;
+
+.authentication-layout {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	background-color: @authentication-background;
+
+	.authentication-layout-content {
+		background-color: @authentication-background-content;
+
+		.ant-input-prefix {
+			margin-right: 8px;
+		}
+	}
+}
