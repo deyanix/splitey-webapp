@@ -1,19 +1,44 @@
 @authentication-background: #edeff1;
 @authentication-background-content: #ffffff;
 
+.authentication-layout-container {
+	max-width: 320px;
+	margin: auto;
+}
+
+.authentication-layout-logo {
+	width: fit-content;
+	height: 48px;
+	margin-top: 48px;
+	margin-bottom: 16px;
+}
+
 .authentication-layout {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	height: 100%;
+	//background-color: darken(@authentication-background, 80%);
 	background-color: @authentication-background;
 
 	.authentication-layout-content {
+		//background-color: darken(@authentication-background-content, 80%);
 		background-color: @authentication-background-content;
 
 		.ant-input-prefix {
 			margin-right: 8px;
+		}
+	}
+
+	.authentication-layout-footer {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		.ant-select-selector {
+			width: 96px;
+			padding: 0;
 		}
 	}
 }

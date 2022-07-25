@@ -4,15 +4,20 @@
 		"module": "es2015",
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
 		"strict": true,
 		"moduleResolution": "Node",
 		"jsx": "react-jsx",
 		"sourceRoot": "./src",
 		"rootDir": ".",
 		"sourceMap": true,
-		"incremental": true
+		"incremental": true,
+		"paths": {
+			"*": ["."]
+		},
+		"declarationDir": "src/typing"
 	},
 	"exclude": [
 		"node_modules"
-	]
+	],
 }

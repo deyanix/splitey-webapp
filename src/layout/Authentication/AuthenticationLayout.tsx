@@ -1,34 +1,24 @@
-import { Button, Card, Input, Space } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Card, Select } from 'antd';
+import SpliteyLogo from '../../assets/splitey_black_logo.svg';
+import { Outlet } from 'react-router-dom';
 
 export default function () {
 	return (
 		<div className="authentication-layout">
-			<img src="logo.png" width={200} style={{ marginBottom: 16 }} />
-			<Card
-				className="authentication-layout-content"
-				style={{ width: 300 }}
-			>
-				<Space direction="vertical" style={{ width: '100%' }}>
-					<Input
-						placeholder="Username"
-						size="large"
-						bordered={false}
-						prefix={<UserOutlined />}
-					/>
-					<Input.Password
-						placeholder="Password"
-						size="large"
-						bordered={false}
-						prefix={<LockOutlined />}
-					/>
-					<div
-						style={{ display: 'flex', justifyContent: 'flex-end' }}
-					>
-						<Button type="primary">Zaloguj się</Button>
-					</div>
-				</Space>
-			</Card>
+			<div className="authentication-layout">
+				<SpliteyLogo className="authentication-layout-logo" />
+				<Card className="authentication-layout-content">
+					<Outlet />
+				</Card>
+
+				<div className="authentication-layout-footer">
+					<Select defaultValue="lucy" bordered={false}>
+						<Select.Option value="jack">Polski</Select.Option>
+						<Select.Option value="lucy">English</Select.Option>
+						<Select.Option value="Yiminghe">Deutsche</Select.Option>
+					</Select>
+				</div>
+			</div>
 		</div>
 	);
 }
