@@ -1,6 +1,10 @@
-import { Card, Select } from 'antd';
+import { Button, Card, Select } from 'antd';
 import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 import { Outlet } from 'react-router-dom';
+import { ThemeContext } from '../../components/ThemeProvider/ThemeProvider';
+import { ThemeType } from '../../themes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
 export default function () {
 	return (
@@ -17,6 +21,32 @@ export default function () {
 						<Select.Option value="lucy">English</Select.Option>
 						<Select.Option value="Yiminghe">Deutsche</Select.Option>
 					</Select>
+					<ThemeContext.Consumer>
+						{({ theme, setTheme }) => (
+							<>
+								<Button
+									type="text"
+									shape="circle"
+									icon={
+										<FontAwesomeIcon
+											icon={
+												theme === ThemeType.DARK
+													? faMoon
+													: faSun
+											}
+										/>
+									}
+									onClick={() =>
+										setTheme(
+											theme === ThemeType.DARK
+												? ThemeType.LIGHT
+												: ThemeType.DARK
+										)
+									}
+								/>
+							</>
+						)}
+					</ThemeContext.Consumer>
 				</div>
 			</div>
 		</div>

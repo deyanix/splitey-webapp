@@ -14,7 +14,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons/faArrowRightFromBracket';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons/faAddressBook';
-import SpliteyLogo from '../../assets/splitey_black_icon.svg';
+import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 
 const menu = (
 	<Menu
@@ -75,7 +75,13 @@ const MainLayout: React.FC = () => {
 					alignItems: 'center',
 				}}
 			>
-				<SpliteyLogo />
+				<SpliteyLogo
+					style={{
+						height: '48px',
+						width: 'fit-content',
+						fill: 'white',
+					}}
+				/>
 				<Dropdown
 					overlay={menu}
 					trigger={['click']}

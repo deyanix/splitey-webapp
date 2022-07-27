@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -40,16 +41,43 @@ module.exports = {
 			},
 			{
 				test: /\.less$/i,
-				use: [
-					'style-loader',
-					'css-loader',
+				oneOf: [
 					{
-						loader: 'less-loader',
-						options: {
-							lessOptions: {
-								javascriptEnabled: true,
+						resourceQuery: /theme/,
+						use: [
+							// {
+							// 	loader: 'style-loader',
+							// 	options: { injectType: 'linkTag' },
+							// },
+							{
+								loader: 'file-loader',
+								options: {
+									name: 'css/[name].css',
+								},
 							},
-						},
+							{
+								loader: 'less-loader',
+								options: {
+									lessOptions: {
+										javascriptEnabled: true,
+									},
+								},
+							},
+						],
+					},
+					{
+						use: [
+							MiniCssExtractPlugin.loader,
+							'css-loader',
+							{
+								loader: 'less-loader',
+								options: {
+									lessOptions: {
+										javascriptEnabled: true,
+									},
+								},
+							},
+						],
 					},
 				],
 			},
@@ -61,6 +89,18 @@ module.exports = {
 						loader: '@svgr/webpack',
 						options: {
 							typescript: true,
+							svgoConfig: {
+								plugins: [
+									{
+										name: 'preset-default',
+										params: {
+											overrides: {
+												cleanupIDs: false,
+											},
+										},
+									},
+								],
+							},
 						},
 					},
 				],
@@ -95,5 +135,8 @@ module.exports = {
 			title: 'Splitey',
 		}),
 		isDevelopment && new ForkTsCheckerWebpackPlugin(),
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+		}),
 	].filter(Boolean),
 };

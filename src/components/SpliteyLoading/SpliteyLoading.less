@@ -1,0 +1,171 @@
+/* Warning: Component in-dependent of Ant Design */
+@animation-timing: ease-in;
+@animation-duration: 3s;
+@animation-iteration-count: infinite;
+
+.splitey-loading {
+	stroke-dasharray: 46 !important;
+	animation-name: opacity-animation;
+	animation-duration: @animation-duration;
+	animation-timing-function: @animation-timing;
+	animation-iteration-count: @animation-iteration-count;
+
+	#track-bottom {
+		stroke-dasharray: 46 !important;
+		animation-name: track-bottom-animation;
+		animation-duration: @animation-duration;
+		animation-timing-function: @animation-timing;
+		animation-iteration-count: @animation-iteration-count;
+	}
+
+	#dart-bottom {
+		transform-origin: 12.98224px 28.49999px;
+		animation-name: dart-bottom-animation;
+		animation-duration: @animation-duration;
+		animation-timing-function: @animation-timing;
+		animation-iteration-count: @animation-iteration-count;
+	}
+
+	#track-top {
+		stroke-dasharray: 22 !important;
+		animation-name: track-top-animation;
+		animation-duration: @animation-duration;
+		animation-timing-function: @animation-timing;
+		animation-iteration-count: @animation-iteration-count;
+	}
+
+	#dart-top {
+		transform-origin: 26.51755px 12.4983px;
+		animation-name: dart-top-animation;
+		animation-duration: @animation-duration;
+		animation-timing-function: @animation-timing;
+		animation-iteration-count: @animation-iteration-count;
+	}
+}
+
+@keyframes opacity-animation {
+	0% {
+		opacity: 1;
+	}
+	75% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes track-bottom-animation {
+	0% {
+		stroke-dashoffset: 44;
+	}
+	12.5% {
+		stroke-dashoffset: 31;
+	}
+	27.5% {
+		stroke-dashoffset: 8;
+	}
+	45% {
+		stroke-dashoffset: 0;
+		transform: translateX(0);
+	}
+	55% {
+		stroke-dashoffset: 0;
+		transform: translateX(0);
+	}
+	75% {
+		stroke-dashoffset: -37;
+		transform: translateX(0);
+	}
+	90% {
+		stroke-dashoffset: -46;
+		transform: translateX(-8px);
+	}
+	100% {
+		stroke-dashoffset: -46;
+		transform: translateX(-8px);
+	}
+}
+
+@keyframes dart-bottom-animation {
+	0% {
+		transform: translateX(0px) rotate(180deg);
+	}
+	12.5% {
+		transform: translateX(10px) rotate(180deg);
+	}
+	27.5% {
+		transform: translateX(10px) rotate(360deg);
+	}
+	45% {
+		transform: translateX(0px) rotate(360deg);
+	}
+	55% {
+		transform: translateX(0px) rotate(360deg);
+	}
+	75% {
+		transform: translateX(0px) rotate(360deg);
+	}
+	90% {
+		transform: translateX(-8px) rotate(360deg);
+	}
+	100% {
+		transform: translateX(-8px) rotate(360deg);
+	}
+}
+
+@keyframes track-top-animation {
+	0% {
+		stroke-dashoffset: 19;
+	}
+	25% {
+		stroke-dashoffset: 5;
+	}
+	45% {
+		stroke-dashoffset: 0;
+		transform: translateX(0px);
+	}
+	55% {
+		stroke-dashoffset: 0;
+		transform: translateX(0px);
+	}
+	75% {
+		stroke-dashoffset: -14;
+		transform: translateX(0px);
+	}
+	90% {
+		stroke-dashoffset: -22;
+		transform: translateX(8px);
+	}
+	100% {
+		stroke-dashoffset: -22;
+		transform: translateX(8px);
+	}
+}
+
+@keyframes dart-top-animation {
+	0% {
+		transform: translateX(-7.5px) rotate(270deg);
+	}
+	25% {
+		transform: translateX(-7.5px) rotate(360deg);
+	}
+	45% {
+		transform: translateX(0px) rotate(360deg);
+	}
+	55% {
+		transform: translateX(0px) rotate(360deg);
+	}
+	75% {
+		transform: translateX(0px) rotate(360deg);
+	}
+	90% {
+		transform: translateX(8px) rotate(360deg);
+	}
+	100% {
+		transform: translateX(8px) rotate(360deg);
+	}
+}
