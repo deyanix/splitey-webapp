@@ -3,12 +3,12 @@ import React, { Suspense } from 'react';
 import { AppRouter } from './router';
 import './i18n';
 import { ThemeProvider } from './components/ThemeProvider/ThemeProvider';
-import Loading from './components/Loading/Loading';
+import Preloader from './components/Preloader/Preloader';
 
 const App = () => {
 	return (
 		<>
-			<Suspense fallback={<Loading />}>
+			<Suspense fallback={<Preloader />}>
 				<ThemeProvider>
 					<AppRouter />
 				</ThemeProvider>

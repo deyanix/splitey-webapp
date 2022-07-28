@@ -1,4 +1,4 @@
-/* Warning: Component in-dependent of Ant Design */
+/* Warning: Component in-dependent of theme & Ant Design */
 @animation-timing: ease-in;
 @animation-duration: 3s;
 @animation-iteration-count: infinite;
@@ -45,12 +45,15 @@
 
 @keyframes opacity-animation {
 	0% {
+		opacity: 0;
+	}
+	10% {
 		opacity: 1;
 	}
 	75% {
 		opacity: 1;
 	}
-	90% {
+	85% {
 		opacity: 0;
 	}
 	100% {
@@ -81,11 +84,11 @@
 		transform: translateX(0);
 	}
 	90% {
-		stroke-dashoffset: -46;
+		stroke-dashoffset: -44;
 		transform: translateX(-8px);
 	}
 	100% {
-		stroke-dashoffset: -46;
+		stroke-dashoffset: -44;
 		transform: translateX(-8px);
 	}
 }
@@ -137,11 +140,11 @@
 		transform: translateX(0px);
 	}
 	90% {
-		stroke-dashoffset: -22;
+		stroke-dashoffset: -20;
 		transform: translateX(8px);
 	}
 	100% {
-		stroke-dashoffset: -22;
+		stroke-dashoffset: -20;
 		transform: translateX(8px);
 	}
 }
