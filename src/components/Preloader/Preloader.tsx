@@ -20,6 +20,12 @@ const Preloader: React.FC<PreloaderProps> = (props) => {
 			setStatus('ENTERING');
 		} else {
 			setStatus('EXITING');
+			const timeout = setTimeout(() => {
+				setStatus('EXITED');
+			}, 1000);
+			return () => {
+				clearTimeout(timeout);
+			};
 		}
 	}, [props.showing]);
 

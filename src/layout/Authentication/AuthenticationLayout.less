@@ -1,9 +1,13 @@
-.authentication-layout-container {
+.authentication-layout__container {
+	width: 100%;
 	max-width: 320px;
 	margin: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-.authentication-layout-logo {
+.authentication-layout__logo {
 	width: fit-content;
 	height: 48px;
 	margin-top: 48px;
@@ -12,16 +16,11 @@
 }
 
 .authentication-layout {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
 	height: 100%;
-	//background-color: darken(@authentication-background, 80%);
 	background-color: @authentication-background;
 
-	.authentication-layout-content {
-		//background-color: darken(@authentication-background-content, 80%);
+	.authentication-layout__content {
+		width: 100%;
 		background-color: @authentication-background-content;
 
 		.ant-input-prefix {
@@ -29,7 +28,7 @@
 		}
 	}
 
-	.authentication-layout-footer {
+	.authentication-layout__footer {
 		margin-top: 8px;
 		display: flex;
 		justify-content: space-between;

@@ -9,13 +9,13 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 export default function () {
 	return (
 		<div className="authentication-layout">
-			<div className="authentication-layout">
-				<SpliteyLogo className="authentication-layout-logo" />
-				<Card className="authentication-layout-content">
+			<div className="authentication-layout__container">
+				<SpliteyLogo className="authentication-layout__logo" />
+				<Card className="authentication-layout__content">
 					<Outlet />
 				</Card>
 
-				<div className="authentication-layout-footer">
+				<div className="authentication-layout__footer">
 					<Select defaultValue="lucy" bordered={false}>
 						<Select.Option value="jack">Polski</Select.Option>
 						<Select.Option value="lucy">English</Select.Option>
