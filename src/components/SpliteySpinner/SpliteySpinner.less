@@ -3,14 +3,14 @@
 @animation-duration: 3s;
 @animation-iteration-count: infinite;
 
-.splitey-loading {
+.splitey-spinner {
 	stroke-dasharray: 46 !important;
 	animation-name: opacity-animation;
 	animation-duration: @animation-duration;
 	animation-timing-function: @animation-timing;
 	animation-iteration-count: @animation-iteration-count;
 
-	#track-bottom {
+	#splitey-spinner__track-bottom {
 		stroke-dasharray: 46 !important;
 		animation-name: track-bottom-animation;
 		animation-duration: @animation-duration;
@@ -18,7 +18,7 @@
 		animation-iteration-count: @animation-iteration-count;
 	}
 
-	#dart-bottom {
+	#splitey-spinner__dart-bottom {
 		transform-origin: 12.98224px 28.49999px;
 		animation-name: dart-bottom-animation;
 		animation-duration: @animation-duration;
@@ -26,7 +26,7 @@
 		animation-iteration-count: @animation-iteration-count;
 	}
 
-	#track-top {
+	#splitey-spinner__track-top {
 		stroke-dasharray: 22 !important;
 		animation-name: track-top-animation;
 		animation-duration: @animation-duration;
@@ -34,7 +34,7 @@
 		animation-iteration-count: @animation-iteration-count;
 	}
 
-	#dart-top {
+	#splitey-spinner__dart-top {
 		transform-origin: 26.51755px 12.4983px;
 		animation-name: dart-top-animation;
 		animation-duration: @animation-duration;

@@ -8,7 +8,7 @@ import Preloader from './components/Preloader/Preloader';
 const App = () => {
 	return (
 		<>
-			<Suspense fallback={<Preloader />}>
+			<Suspense fallback={<Preloader showing={true} />}>
 				<ThemeProvider>
 					<AppRouter />
 				</ThemeProvider>

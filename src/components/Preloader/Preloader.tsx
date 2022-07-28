@@ -1,18 +1,42 @@
-import React, { Ref, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Preloader.less';
-import SpliteyLoading from '../SpliteyLoading/SpliteyLoading';
+import SpliteySpinner from '../SpliteySpinner/SpliteySpinner';
 import { ThemeContext } from '../ThemeProvider/ThemeProvider';
 import { ThemeType } from '../../themes';
 
 export interface PreloaderProps {
 	theme?: ThemeType;
-	showing?: boolean;
+	showing: boolean;
 }
 
+export type PreloaderStatus = 'ENTERING' | 'ENTERED' | 'EXITING' | 'EXITED';
+
 const Preloader: React.FC<PreloaderProps> = (props) => {
+	const [status, setStatus] = useState<PreloaderStatus>('EXITED');
 	const loadingRef = useRef<HTMLDivElement>(null);
-	const showing: boolean = props.showing === undefined ? true : props.showing;
-	if (!showing) {
+
+	useEffect(() => {
+		if (props.showing) {
+			setStatus('ENTERING');
+		} else {
+			setStatus('EXITING');
+		}
+	}, [props.showing]);
+
+	const onTransitionEnd = (event: React.TransitionEvent) => {
+		if (event.propertyName === 'opacity') {
+			switch (status) {
+				case 'ENTERING':
+					setStatus('ENTERED');
+					break;
+				case 'EXITING':
+					setStatus('EXITED');
+					break;
+			}
+		}
+	};
+
+	if (status === 'EXITED') {
 		return <></>;
 	}
 
@@ -21,13 +45,15 @@ const Preloader: React.FC<PreloaderProps> = (props) => {
 			{({ theme }) => (
 				<div
 					ref={loadingRef}
-					className={
-						'loading-backdrop loading-backdrop-' + props.theme ??
-						theme
-					}
+					className={[
+						'preloader',
+						'preloader--' + props.theme ?? theme,
+						'preloader--' + status.toLowerCase(),
+					].join(' ')}
+					onTransitionEnd={onTransitionEnd}
 				>
-					<div className="loading">
-						<SpliteyLoading />
+					<div className="preloader__spinner">
+						<SpliteySpinner />
 					</div>
 				</div>
 			)}

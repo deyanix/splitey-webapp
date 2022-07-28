@@ -4,7 +4,6 @@
    height="40mm"
    version="1.1"
    viewBox="0 0 40 40"
-   id="svg14"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -13,7 +12,7 @@
      d="m 7.6696882,36.03379 6.8705998,-3.966741 v 7.933482 z"
      fill="#fff"
      stroke-width="0"
-     id="dart-bottom"
+     id="splitey-spinner__dart-bottom"
      style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-opacity:1" />
   <path
      d="m 9.390888,21.145476 h 13.777843 c 4.110795,0 7.44315,3.332356 7.44315,7.44315 0,4.110795 -3.332355,7.443204 -7.44315,7.443265 l -8.628443,0.0019"
@@ -21,13 +20,13 @@
      stroke="#fff"
      stroke-linecap="round"
      stroke-width="3.4353"
-     id="track-bottom"
+     id="splitey-spinner__track-bottom"
      style="fill:none;fill-opacity:1;stroke:currentColor;stroke-opacity:1" />
   <path
      d="m 32.330333,3.966417 -6.8706,3.9667409 V -3.2389587e-4 Z"
      fill="#fff"
      stroke-width="0"
-     id="dart-top"
+     id="splitey-spinner__dart-top"
      style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-opacity:1" />
   <path
      d="m 12.105806,15.131134 a 7.44315,7.44315 0 0 1 0,-7.4431496 7.44315,7.44315 0 0 1 6.445997,-3.721575 l 6.90793,7.2e-6"
@@ -35,6 +34,6 @@
      stroke="#fff"
      stroke-linecap="round"
      stroke-width="3.4353"
-     id="track-top"
+     id="splitey-spinner__track-top"
      style="fill:none;fill-opacity:1;stroke:currentColor;stroke-opacity:1" />
 </svg>
