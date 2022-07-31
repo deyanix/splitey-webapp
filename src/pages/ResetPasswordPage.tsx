@@ -3,8 +3,11 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function () {
+	const { t } = useTranslation();
+
 	return (
 		<Form>
 			<Space direction="vertical" style={{ width: '100%' }}>
@@ -13,11 +16,10 @@ export default function () {
 						level={3}
 						style={{ textAlign: 'center', marginBottom: '0.1em' }}
 					>
-						Reset your password
+						{t('resetYourPassword')}
 					</Typography.Title>
 					<Typography.Text type="secondary">
-						We will send you an email with instructions on the reset
-						password
+						{t('resetPasswordInstructions')}
 					</Typography.Text>
 				</div>
 				<Form.Item
@@ -31,7 +33,7 @@ export default function () {
 				>
 					<Input
 						prefix={<FontAwesomeIcon icon={faEnvelope} />}
-						placeholder="Email"
+						placeholder={t('email')}
 						size="large"
 					/>
 				</Form.Item>
@@ -41,9 +43,9 @@ export default function () {
 						htmlType="submit"
 						style={{ width: '100%' }}
 					>
-						Reset password
+						{t('resetPassword')}
 					</Button>
-					<Link to="/signin">Log in instead</Link>
+					<Link to="/signin">{t('signInInstead')}</Link>
 				</Form.Item>
 			</Space>
 		</Form>

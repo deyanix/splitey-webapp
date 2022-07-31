@@ -5,6 +5,7 @@ import { ThemeContext } from '../../components/ThemeProvider/ThemeProvider';
 import { ThemeType } from '../../themes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import LanguageSelect from './LanguageSelect';
 
 export default function () {
 	return (
@@ -16,11 +17,7 @@ export default function () {
 				</Card>
 
 				<div className="authentication-layout__footer">
-					<Select defaultValue="lucy" bordered={false}>
-						<Select.Option value="jack">Polski</Select.Option>
-						<Select.Option value="lucy">English</Select.Option>
-						<Select.Option value="Yiminghe">Deutsche</Select.Option>
-					</Select>
+					<LanguageSelect />
 					<ThemeContext.Consumer>
 						{({ theme, setTheme }) => (
 							<>
