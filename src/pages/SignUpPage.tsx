@@ -10,13 +10,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Reaptcha from 'reaptcha';
-import { ThemeContext } from '../components/ThemeProvider/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import { yup } from '../validation/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { Message } from 'yup/lib/types';
+import { useTheme } from '../components/ThemeProvider/ThemeContext';
 
 const schema = yup
 	.object({
@@ -32,6 +32,7 @@ const schema = yup
 	.required();
 
 export default function () {
+	const { theme } = useTheme();
 	const { t, i18n } = useTranslation();
 	const { handleSubmit, control, formState, setValue } = useForm({
 		resolver: yupResolver(schema, {
@@ -118,7 +119,7 @@ export default function () {
 						help={
 							errors.password?.message || touchedFields.password
 								? tMessage(errors.password?.message)
-								: 'Użyj co najmniej 8 znaków, w tym małych i wielkich liter, cyfr oraz symboli'
+								: tMessage('validation:passwordRequirements')
 						}
 					>
 						<Controller
@@ -134,74 +135,6 @@ export default function () {
 							)}
 						/>
 					</Form.Item>
-					<Row style={{ display: 'none' }}>
-						<Col span={24}>Hasło musi spełniać poniższe reguły</Col>
-						<Col span={24}>
-							<Typography.Text type="danger">
-								<div
-									style={{
-										width: 20,
-										display: 'inline-block',
-									}}
-								>
-									<FontAwesomeIcon icon={faX} />
-								</div>
-								Co najmniej 8 wszystkich znaków
-							</Typography.Text>
-						</Col>
-						<Col span={24}>
-							<Typography.Text type="danger">
-								<div
-									style={{
-										width: 20,
-										display: 'inline-block',
-									}}
-								>
-									<FontAwesomeIcon icon={faX} />
-								</div>
-								Co najmniej 1 mała litera
-							</Typography.Text>
-						</Col>
-						<Col span={24}>
-							<Typography.Text type="success">
-								<div
-									style={{
-										width: 20,
-										display: 'inline-block',
-									}}
-								>
-									<FontAwesomeIcon icon={faCheck} />
-								</div>
-								Co najmniej 1 wielka litera
-							</Typography.Text>
-						</Col>
-						<Col span={24}>
-							<Typography.Text type="danger">
-								<div
-									style={{
-										width: 20,
-										display: 'inline-block',
-									}}
-								>
-									<FontAwesomeIcon icon={faX} />
-								</div>
-								Co najmniej 1 cyfra
-							</Typography.Text>
-						</Col>
-						<Col span={24}>
-							<Typography.Text type="success">
-								<div
-									style={{
-										width: 20,
-										display: 'inline-block',
-									}}
-								>
-									<FontAwesomeIcon icon={faCheck} />
-								</div>
-								Co najmniej 1 znak specjalny
-							</Typography.Text>
-						</Col>
-					</Row>
 				</Col>
 				<Col span={24} sm={12}>
 					<Form.Item
@@ -228,18 +161,12 @@ export default function () {
 					</Form.Item>
 				</Col>
 				<Col span={24}>
-					<ThemeContext.Consumer>
-						{({ theme }) => (
-							<Reaptcha
-								sitekey="6LcEpQMhAAAAAMPdELHaRSG9-XlWTSbFSaEKxInT"
-								theme={theme}
-								hl={i18n.language}
-								onVerify={(response) =>
-									setValue('captcha', response)
-								}
-							/>
-						)}
-					</ThemeContext.Consumer>
+					<Reaptcha
+						sitekey="6LcEpQMhAAAAAMPdELHaRSG9-XlWTSbFSaEKxInT"
+						theme={theme}
+						hl={i18n.language}
+						onVerify={(response) => setValue('captcha', response)}
+					/>
 					<Typography.Text type="danger">
 						{tMessage(errors.captcha?.message)}
 					</Typography.Text>

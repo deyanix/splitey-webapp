@@ -1,13 +1,15 @@
 import { Button, Card } from 'antd';
 import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 import { Outlet } from 'react-router-dom';
-import { ThemeContext } from '../../components/ThemeProvider/ThemeProvider';
 import { ThemeType } from '../../themes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import LanguageSelect from './LanguageSelect';
+import { useTheme } from '../../components/ThemeProvider/ThemeContext';
 
 export default function () {
+	const { theme, setTheme } = useTheme();
+
 	return (
 		<div className="authentication-layout">
 			<div className="authentication-layout__container">
@@ -18,32 +20,22 @@ export default function () {
 
 				<div className="authentication-layout__footer">
 					<LanguageSelect />
-					<ThemeContext.Consumer>
-						{({ theme, setTheme }) => (
-							<>
-								<Button
-									type="text"
-									shape="circle"
-									icon={
-										<FontAwesomeIcon
-											icon={
-												theme === ThemeType.DARK
-													? faMoon
-													: faSun
-											}
-										/>
-									}
-									onClick={() =>
-										setTheme(
-											theme === ThemeType.DARK
-												? ThemeType.LIGHT
-												: ThemeType.DARK
-										)
-									}
-								/>
-							</>
-						)}
-					</ThemeContext.Consumer>
+					<Button
+						type="text"
+						shape="circle"
+						icon={
+							<FontAwesomeIcon
+								icon={theme === ThemeType.DARK ? faMoon : faSun}
+							/>
+						}
+						onClick={() =>
+							setTheme(
+								theme === ThemeType.DARK
+									? ThemeType.LIGHT
+									: ThemeType.DARK
+							)
+						}
+					/>
 				</div>
 			</div>
 		</div>

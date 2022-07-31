@@ -5,8 +5,6 @@ import SignInPage from '../pages/SignInPage';
 import SignUpPage from '../pages/SignUpPage';
 import DashboardPage from '../pages/DashboardPage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
-import TestPage from '../pages/TestPage';
-import TestFormikPage from '../pages/TestFormikPage';
 
 export default [
 	{
@@ -19,8 +17,6 @@ export default [
 			{ path: '/signin', element: <SignInPage /> },
 			{ path: '/signup', element: <SignUpPage /> },
 			{ path: '/reset-password', element: <ResetPasswordPage /> },
-			{ path: '/test', element: <TestPage /> },
-			{ path: '/test/formik', element: <TestFormikPage /> },
 		],
 	},
 ] as RouteObject[];

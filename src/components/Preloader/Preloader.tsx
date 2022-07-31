@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Preloader.less';
 import SpliteySpinner from '../SpliteySpinner/SpliteySpinner';
-import { ThemeContext } from '../ThemeProvider/ThemeProvider';
 import { ThemeType } from '../../themes';
+import { useTheme } from '../ThemeProvider/ThemeContext';
 
 export interface PreloaderProps {
 	theme?: ThemeType;
@@ -14,6 +14,7 @@ export type PreloaderStatus = 'ENTERING' | 'ENTERED' | 'EXITING' | 'EXITED';
 const Preloader: React.FC<PreloaderProps> = (props) => {
 	const [status, setStatus] = useState<PreloaderStatus>('EXITED');
 	const loadingRef = useRef<HTMLDivElement>(null);
+	const { theme } = useTheme();
 
 	useEffect(() => {
 		if (props.showing) {
@@ -47,23 +48,19 @@ const Preloader: React.FC<PreloaderProps> = (props) => {
 	}
 
 	return (
-		<ThemeContext.Consumer>
-			{({ theme }) => (
-				<div
-					ref={loadingRef}
-					className={[
-						'preloader',
-						'preloader--' + props.theme ?? theme,
-						'preloader--' + status.toLowerCase(),
-					].join(' ')}
-					onTransitionEnd={onTransitionEnd}
-				>
-					<div className="preloader__spinner">
-						<SpliteySpinner />
-					</div>
-				</div>
-			)}
-		</ThemeContext.Consumer>
+		<div
+			ref={loadingRef}
+			className={[
+				'preloader',
+				'preloader--' + props.theme ?? theme,
+				'preloader--' + status.toLowerCase(),
+			].join(' ')}
+			onTransitionEnd={onTransitionEnd}
+		>
+			<div className="preloader__spinner">
+				<SpliteySpinner />
+			</div>
+		</div>
 	);
 };
 

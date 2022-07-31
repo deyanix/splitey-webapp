@@ -6,16 +6,7 @@ import {
 	ThemeType,
 } from '../../themes';
 import Preloader from '../Preloader/Preloader';
-
-export interface ThemeConsumer {
-	theme?: ThemeType;
-	setTheme: (theme: ThemeType) => void;
-}
-
-export const ThemeContext = React.createContext<ThemeConsumer>({
-	theme: ThemeType.LIGHT,
-	setTheme: () => {},
-});
+import { ThemeContext } from './ThemeContext';
 
 export const ThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
 	const [theme, setTheme] = useState<ThemeType | undefined>();
