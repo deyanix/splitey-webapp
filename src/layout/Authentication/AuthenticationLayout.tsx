@@ -1,4 +1,4 @@
-import { Button, Card, Select } from 'antd';
+import { Button, Card } from 'antd';
 import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 import { Outlet } from 'react-router-dom';
 import { ThemeContext } from '../../components/ThemeProvider/ThemeProvider';

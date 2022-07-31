@@ -1,8 +1,9 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, InputNumber } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { yup } from '../validation/yup';
 
 const schema = yup
 	.object({
@@ -12,11 +13,11 @@ const schema = yup
 	.required();
 
 export default function () {
+	const { t } = useTranslation();
 	const { handleSubmit, control, formState } = useForm({
-		shouldFocusError: true,
 		resolver: yupResolver(schema),
 	});
-	const { errors } = formState;
+	const errors = formState.errors;
 
 	const onSubmit = (data: any) => console.log(data);
 	return (
@@ -24,7 +25,7 @@ export default function () {
 			<Form.Item
 				hasFeedback
 				validateStatus={errors.firstName?.message ? 'error' : undefined}
-				help={errors.firstName?.message}
+				help={String(errors.firstName?.message)}
 			>
 				<Controller
 					name="firstName"
@@ -42,13 +43,13 @@ export default function () {
 			<Form.Item
 				hasFeedback
 				validateStatus={!!errors.age ? 'error' : ''}
-				help={errors.age?.message}
+				help={String(errors.age?.message)}
 			>
 				<Controller
 					name="age"
 					control={control}
 					render={({ field }) => (
-						<Input placeholder="Age" {...field} />
+						<InputNumber placeholder="Age" {...field} />
 					)}
 				/>
 			</Form.Item>

@@ -17,7 +17,7 @@ export const ThemeContext = React.createContext<ThemeConsumer>({
 	setTheme: () => {},
 });
 
-export const ThemeProvider: React.FC = (props) => {
+export const ThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
 	const [theme, setTheme] = useState<ThemeType | undefined>();
 	const [pendingTheme, setPendingTheme] = useState<ThemeType | undefined>(
 		getOsTheme()

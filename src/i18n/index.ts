@@ -16,4 +16,5 @@ export default i18next
 		debug: true,
 		resources: translations,
 		supportedLngs: Object.keys(translations),
+		defaultNS: 'common',
 	});

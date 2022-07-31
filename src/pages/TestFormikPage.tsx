@@ -1,8 +1,7 @@
 import React from 'react';
 import * as yup from 'yup';
-import { Field, Formik, useFormik } from 'formik';
-import { Checkbox, Form, InputNumber, Input, SubmitButton } from 'formik-antd';
-import { Button } from 'antd';
+import { Field, Formik } from 'formik';
+import { Form, Input, InputNumber, SubmitButton } from 'formik-antd';
 
 const schema = yup
 	.object({

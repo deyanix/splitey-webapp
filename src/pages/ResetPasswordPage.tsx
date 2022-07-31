@@ -1,7 +1,6 @@
-import { Button, Typography, Input, Space, Form, Checkbox } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Space, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
