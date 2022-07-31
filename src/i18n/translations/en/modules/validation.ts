@@ -2,7 +2,7 @@ export default {
 	invalid: 'Invalid field',
 	required: 'Required field',
 	confirmPassword: "Passwords don't match",
-	captcha: 'Zatwierdź reCaptcha',
+	captcha: 'Submit ReCaptcha',
 	email: 'Incorrect e-mail',
 	minLength_one: 'At least {{count}} character',
 	minLength_other: 'At least {{count}} characters',

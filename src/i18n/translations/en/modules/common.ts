@@ -14,7 +14,9 @@ export default {
 	needAnAccount: 'Need an account?',
 	signUpNow: 'Sign up now!',
 	resetYourPassword: 'Reset your password',
-	resetPassword: 'Zresetuj hasło',
+	resetPassword: 'Reset password',
 	resetPasswordInstructions:
 		'We will send you an email with instructions on the reset password',
+	firstName: 'First name',
+	lastName: 'Last name',
 };

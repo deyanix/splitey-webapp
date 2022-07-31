@@ -17,4 +17,6 @@ export default {
 	resetPassword: 'Zresetuj hasło',
 	resetPasswordInstructions:
 		'Wyślemy na Twój e-mail instrukcję resetowania hasła',
+	firstName: 'Imię',
+	lastName: 'Nazwisko',
 };

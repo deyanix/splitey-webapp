@@ -41,8 +41,9 @@ export default function () {
 	});
 	const { errors, touchedFields } = formState;
 
-	function onSubmit(data: any): void {}
-	console.log(formState);
+	function onSubmit(data: any): void {
+		console.log(data);
+	}
 
 	function tMessage(message: Message | undefined): string | undefined {
 		if (!message) {
