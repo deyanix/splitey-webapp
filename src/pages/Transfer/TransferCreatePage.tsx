@@ -5,6 +5,7 @@ import {
 	Form,
 	InputNumber,
 	List,
+	Radio,
 	Segmented,
 	Select,
 	Space,
@@ -31,15 +32,9 @@ const data = [
 
 export default function () {
 	return (
-		<Form layout="horizontal">
+		<Form layout="horizontal" className="dashboard-page" colon={false}>
 			<Form.Item
 				label="Paid by"
-				rules={[
-					{
-						required: true,
-						message: 'Please input your username!',
-					},
-				]}
 			>
 				<Select defaultValue={1}>
 					<Select.Option value={1}>Krzysztof Fryta</Select.Option>
@@ -48,34 +43,36 @@ export default function () {
 					<Select.Option value={4}>Alicja Kozik</Select.Option>
 				</Select>
 			</Form.Item>
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-				<Segmented
-					options={[
-						{
-							label: 'Weight',
-							value: 'weight',
-							icon: <FontAwesomeIcon icon={faScaleBalanced} />,
-						},
-						{
-							label: 'Percentage',
-							value: 'percentage',
-							icon: <FontAwesomeIcon icon={faPercent} />,
-						},
-						{
-							label: 'Custom',
-							value: 'custom',
-							icon: <FontAwesomeIcon icon={faEquals} />,
-						},
-					]}
+			<Form.Item
+				label="Amount"
+			>
+				<InputNumber
+					defaultValue={4.48 as number}
+					addonAfter="zł"
+					style={{ maxWidth: '100%' }}
 				/>
+			</Form.Item>
+			<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+				<Radio.Group
+					className="split-method"
+					optionType="button"
+					buttonStyle="solid"
+				>
+					<Radio.Button value="a">
+						<FontAwesomeIcon icon={faScaleBalanced} className="split-method__icon" />
+						Weight
+					</Radio.Button>
+					<Radio.Button value="b">
+						<FontAwesomeIcon icon={faPercent} className="split-method__icon" />
+						Percentage
+					</Radio.Button>
+					<Radio.Button value="c">
+						<FontAwesomeIcon icon={faEquals} className="split-method__icon" />
+						Custom
+					</Radio.Button>
+				</Radio.Group>
 				<Space>
 					<Button>Split equally</Button>
-
-					<InputNumber
-						defaultValue={4.48 as number}
-						addonAfter="zł"
-						style={{ maxWidth: '110px' }}
-					/>
 				</Space>
 			</div>
 			<List

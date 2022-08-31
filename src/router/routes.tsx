@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router-dom';
 import AuthenticationLayout from '../layout/Authentication/AuthenticationLayout';
 import MainLayout from '../layout/Main/MainLayout';
-import SignInPage from '../pages/SignInPage';
-import SignUpPage from '../pages/SignUpPage';
-import DashboardPage from '../pages/DashboardPage';
-import ResetPasswordPage from '../pages/ResetPasswordPage';
+import SignInPage from '../pages/Authentication/SignInPage';
+import SignUpPage from '../pages/Authentication/SignUpPage';
+import DashboardPage from '../pages/Transfer/TransferCreatePage';
+import ResetPasswordPage from '../pages/Authentication/ResetPasswordPage';
 
 export default [
 	{

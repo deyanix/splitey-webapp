@@ -1,4 +1,13 @@
-import { Button, Col, Form, Input, Row, Typography } from 'antd';
+import {
+	Button,
+	Col,
+	Form,
+	Input,
+	Popover,
+	Row,
+	Tooltip,
+	Typography,
+} from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faCheck,
@@ -6,17 +15,18 @@ import {
 	faEnvelope,
 	faLock,
 	faUser,
+	faUserTag,
 	faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import Reaptcha from 'reaptcha';
 import { useTranslation } from 'react-i18next';
-import { yup } from '../validation/yup';
+import { yup } from '../../validation/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Message } from 'yup/lib/types';
-import { useTheme } from '../components/ThemeProvider/ThemeContext';
+import { useTheme } from '../../components/ThemeProvider/ThemeContext';
 
 const schema = yup
 	.object({
@@ -40,9 +50,11 @@ export default function () {
 		}),
 	});
 	const { errors, touchedFields } = formState;
+	const reaptcha = useRef<Reaptcha | null>();
 
 	function onSubmit(data: any): void {
 		console.log(data);
+		reaptcha.current?.reset();
 	}
 
 	function tMessage(message: Message | undefined): string | undefined {
@@ -113,26 +125,34 @@ export default function () {
 				</Col>
 				<Col span={24} sm={12}>
 					<Form.Item
-						hasFeedback
+						hasFeedback={!!errors.password?.message}
 						validateStatus={
 							errors.password?.message ? 'error' : undefined
 						}
 						help={
-							errors.password?.message || touchedFields.password
+							errors.password?.message
 								? tMessage(errors.password?.message)
-								: tMessage('validation:passwordRequirements')
+								: undefined
 						}
 					>
 						<Controller
 							name="password"
 							control={control}
 							render={({ field }) => (
-								<Input.Password
-									prefix={<FontAwesomeIcon icon={faLock} />}
-									placeholder={t('password')}
-									size="large"
-									{...field}
-								/>
+								<Tooltip
+									title={tMessage(
+										'validation:passwordRequirements'
+									)}
+								>
+									<Input.Password
+										prefix={
+											<FontAwesomeIcon icon={faLock} />
+										}
+										placeholder={t('password')}
+										size="large"
+										{...field}
+									/>
+								</Tooltip>
 							)}
 						/>
 					</Form.Item>
@@ -163,6 +183,7 @@ export default function () {
 				</Col>
 				<Col span={24}>
 					<Reaptcha
+						ref={(ref) => (reaptcha.current = ref)}
 						sitekey="6LcEpQMhAAAAAMPdELHaRSG9-XlWTSbFSaEKxInT"
 						theme={theme}
 						hl={i18n.language}
