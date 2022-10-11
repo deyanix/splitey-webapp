@@ -52,7 +52,7 @@ const Preloader: React.FC<PreloaderProps> = (props) => {
 			ref={loadingRef}
 			className={[
 				'preloader',
-				'preloader--' + props.theme ?? theme,
+				'preloader--' + 'dark', //props.theme ?? theme,
 				'preloader--' + status.toLowerCase(),
 			].join(' ')}
 			onTransitionEnd={onTransitionEnd}

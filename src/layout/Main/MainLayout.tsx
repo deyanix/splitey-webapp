@@ -8,7 +8,7 @@ import {
 	MenuProps,
 	Space,
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
@@ -17,45 +17,61 @@ import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons/faAddressBook';
 import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 import { faMoon, faWallet } from '@fortawesome/free-solid-svg-icons';
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-const profileMenu: MenuItem[] = [
-	{
-		key: '3',
-		label: <a href="#">Dark</a>,
-		icon: <FontAwesomeIcon icon={faMoon} />,
-	},
-	{
-		key: '1',
-		label: <a href="#">Settings</a>,
-		icon: <FontAwesomeIcon icon={faGear} />,
-	},
-	{
-		type: 'divider',
-	},
-	{
-		key: '2',
-		label: <a href="#">Log out</a>,
-		icon: <FontAwesomeIcon icon={faArrowRightFromBracket} />,
-	},
-];
-
-const siderMenu: MenuItem[] = [
-	{
-		key: '3',
-		label: <a href="#">Settlement</a>,
-		icon: <FontAwesomeIcon icon={faWallet} />,
-	},
-	{
-		key: '1',
-		label: <a href="#">Contacts</a>,
-		icon: <FontAwesomeIcon icon={faAddressBook} />,
-	},
-];
+import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 
 const MainLayout: React.FC = () => {
+	const { user, logout } = useCurrentUser();
 	const [collapsed, setCollapsed] = useState(false);
+
+	const handleProfileMenuClick = useCallback((key: string) => {
+		switch (key) {
+			case 'logout':
+				logout();
+				break;
+		}
+	}, []);
+
+	const profileMenu = useMemo<ItemType[]>(
+		() => [
+			{
+				key: '3',
+				label: <a href="#">Dark</a>,
+				icon: <FontAwesomeIcon icon={faMoon} />,
+			},
+			{
+				key: '1',
+				label: <a href="#">Settings</a>,
+				icon: <FontAwesomeIcon icon={faGear} />,
+			},
+			{
+				type: 'divider',
+			},
+			{
+				key: 'logout',
+				label: 'Log out',
+				icon: <FontAwesomeIcon icon={faArrowRightFromBracket} />,
+				onClick: () => logout,
+			},
+		],
+		[]
+	);
+
+	const siderMenu = useMemo<ItemType[]>(
+		() => [
+			{
+				key: '3',
+				label: <a href="#">Settlement</a>,
+				icon: <FontAwesomeIcon icon={faWallet} />,
+			},
+			{
+				key: '1',
+				label: <a href="#">Contacts</a>,
+				icon: <FontAwesomeIcon icon={faAddressBook} />,
+			},
+		],
+		[]
+	);
 
 	return (
 		<Layout className="main-layout">
@@ -66,10 +82,14 @@ const MainLayout: React.FC = () => {
 					alignItems: 'center',
 				}}
 			>
-				{' '}
 				<SpliteyLogo className="main-layout__logo" />
 				<Dropdown
-					overlay={<Menu items={profileMenu} />}
+					overlay={
+						<Menu
+							items={profileMenu}
+							onClick={({ key }) => handleProfileMenuClick(key)}
+						/>
+					}
 					trigger={['click']}
 					placement="bottomRight"
 				>
@@ -111,7 +131,7 @@ const MainLayout: React.FC = () => {
 						</div>
 					</Layout.Content>
 					<Layout.Footer style={{ textAlign: 'center' }}>
-						Ant Design ©2018 Created by Ant UED
+						Splitey by deyanix
 					</Layout.Footer>
 				</Layout>
 			</Layout>

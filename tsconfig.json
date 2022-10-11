@@ -8,12 +8,11 @@
 		"strict": true,
 		"moduleResolution": "Node",
 		"jsx": "react-jsx",
-		"sourceRoot": "./src",
-		"rootDir": ".",
+		"baseUrl": ".",
 		"sourceMap": true,
 		"incremental": true,
 		"paths": {
-			"*": ["."]
+			"src/*": ["src/*"]
 		}
 	},
 	"exclude": [

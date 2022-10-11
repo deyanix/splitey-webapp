@@ -1,4 +1,4 @@
-import { ThemeType } from '../../themes';
+import { ThemeType } from 'src/themes';
 import React from 'react';
 
 export interface ThemeConsumer {

@@ -2,6 +2,7 @@ export default {
 	submit: 'Zatwierdź',
 	signUp: 'Zarejestruj się',
 	signIn: 'Zaloguj się',
+	login: 'Login',
 	username: 'Nazwa użytkownika',
 	password: 'Hasło',
 	confirmPassword: 'Potwierdź hasło',

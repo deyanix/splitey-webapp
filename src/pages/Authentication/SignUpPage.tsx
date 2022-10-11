@@ -53,7 +53,6 @@ export default function () {
 	const reaptcha = useRef<Reaptcha | null>();
 
 	function onSubmit(data: any): void {
-		console.log(data);
 		reaptcha.current?.reset();
 	}
 

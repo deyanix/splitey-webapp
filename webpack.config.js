@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -45,10 +46,6 @@ module.exports = {
 					{
 						resourceQuery: /theme/,
 						use: [
-							// {
-							// 	loader: 'style-loader',
-							// 	options: { injectType: 'linkTag' },
-							// },
 							{
 								loader: 'file-loader',
 								options: {
@@ -116,6 +113,7 @@ module.exports = {
 				isDevelopment ? 'development' : 'production'
 			),
 		},
+		plugins: [new TsconfigPathsPlugin()],
 	},
 	devServer: {
 		historyApiFallback: true,

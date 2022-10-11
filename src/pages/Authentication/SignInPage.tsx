@@ -1,28 +1,55 @@
 import { Button, Checkbox, Form, Input, Space, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';
+
+export interface SignInForm {
+	login: string;
+	password: string;
+	rememberMe: boolean;
+}
 
 export default function () {
 	const { t } = useTranslation();
+	const { login } = useCurrentUser();
+	const navigate = useNavigate();
+
+	const [loading, setLoading] = useState<boolean>(false);
+
+	const onSubmit = async (data: SignInForm): Promise<void> => {
+		setLoading(true);
+		try {
+			await login(data.login, data.password, data.rememberMe);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
-		<Form initialValues={{ remember: true }}>
+		<Form
+			initialValues={{ remember: true }}
+			onFinish={onSubmit}
+			style={{ width: '320px' }}
+		>
 			<Space direction="vertical" style={{ width: '100%' }}>
 				<Form.Item
-					name="username"
+					name="login"
 					rules={[
 						{
 							required: true,
-							message: 'Please input your Username!',
+							message: 'Please input your login!',
 						},
 					]}
 				>
 					<Input
 						prefix={<FontAwesomeIcon icon={faUser} />}
-						placeholder={t('username')}
+						placeholder={t('usernameOrEmail')}
 						size="large"
+						autoComplete="off"
+						disabled={loading}
 					/>
 				</Form.Item>
 				<Form.Item
@@ -30,7 +57,7 @@ export default function () {
 					rules={[
 						{
 							required: true,
-							message: 'Please input your Password!',
+							message: t(''),
 						},
 					]}
 				>
@@ -38,6 +65,8 @@ export default function () {
 						prefix={<FontAwesomeIcon icon={faLock} />}
 						placeholder={t('password')}
 						size="large"
+						autoComplete="off"
+						disabled={loading}
 					/>
 				</Form.Item>
 			</Space>
@@ -55,6 +84,7 @@ export default function () {
 					type="primary"
 					htmlType="submit"
 					style={{ width: '100%' }}
+					loading={loading}
 				>
 					{t('signIn')}
 				</Button>

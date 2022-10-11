@@ -5,6 +5,13 @@ import SignInPage from '../pages/Authentication/SignInPage';
 import SignUpPage from '../pages/Authentication/SignUpPage';
 import DashboardPage from '../pages/Transfer/TransferCreatePage';
 import ResetPasswordPage from '../pages/Authentication/ResetPasswordPage';
+import { AppRouterOptions } from 'src/router/index';
+
+export const options: AppRouterOptions = {
+	defaultAuthorizedRoute: '/',
+	defaultGuestRoute: '/signin',
+	guestRoutes: ['/signin', '/signup', '/reset-password'],
+};
 
 export default [
 	{

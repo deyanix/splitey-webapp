@@ -2,6 +2,7 @@ export default {
 	submit: 'Submit',
 	signUp: 'Sign up',
 	signIn: 'Sign in',
+	login: 'Login',
 	username: 'Username',
 	password: 'Password',
 	confirmPassword: 'Confirm password',
