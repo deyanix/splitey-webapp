@@ -1,7 +1,7 @@
 import { Button, Checkbox, Form, Input, Space, Typography } from 'antd';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import React, { useEffect, useState } from 'react';
 import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';

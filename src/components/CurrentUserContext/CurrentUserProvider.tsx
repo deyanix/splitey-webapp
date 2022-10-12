@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Preloader from '../Preloader/Preloader';
 import { CurrentUserContext } from './CurrentUserContext';
 import { AuthenticationResult } from 'src/api/Auth/AuthModels';
 import { CurrentUser } from 'src/api/User/UserModels';
@@ -10,6 +9,7 @@ import useStoredAuth from 'src/hooks/useStoredAuth';
 import api from 'src/api';
 import { useNavigate } from 'react-router-dom';
 import { options } from 'src/router/routes';
+import { useTheme } from 'src/components/ThemeProvider/ThemeContext';
 
 export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 	props
@@ -19,14 +19,17 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 	const [interceptorId, setInterceptorId] = useState<number>();
 	const [initializing, setInitializing] = useState<boolean>(false);
 	const [initialized, setInitialized] = useState<boolean>(false);
-	const { storedAuth, setStoredAuth } = useStoredAuth();
+	const { getStoredAuth, setStoredAuth } = useStoredAuth();
+	const { showLoader, hideLoader } = useTheme();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		setInitializing(true);
+		const loaderId = showLoader();
 		load().finally(() => {
 			setInitializing(false);
 			setInitialized(true);
+			hideLoader(loaderId);
 		});
 	}, []);
 
@@ -69,10 +72,11 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 	);
 
 	const load = useCallback(async (): Promise<void> => {
+		const storedAuth = getStoredAuth();
 		if (!_.isNil(storedAuth) && !_.isNil(storedAuth.refreshToken)) {
 			await refreshToken(storedAuth.refreshToken);
 		}
-	}, [storedAuth, refreshToken]);
+	}, [refreshToken]);
 
 	const refresh = useCallback(async (): Promise<void> => {
 		if (!_.isNil(authResult)) {
@@ -86,6 +90,7 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 			password: string,
 			rememberMe: boolean
 		): Promise<void> => {
+			const storedAuth = getStoredAuth();
 			setBothResult(
 				await AuthService.login({
 					login,
@@ -97,7 +102,7 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 			setUser(await UserService.getCurrent());
 			navigate(options.defaultAuthorizedRoute);
 		},
-		[storedAuth, setBothResult]
+		[setBothResult]
 	);
 
 	const logout = useCallback(async (): Promise<void> => {
@@ -107,7 +112,7 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 			setBothResult(undefined);
 			navigate(options.defaultGuestRoute);
 		}
-	}, [authResult, storedAuth]);
+	}, [authResult, setBothResult]);
 
 	return (
 		<CurrentUserContext.Provider
@@ -122,7 +127,6 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 				logout,
 			}}
 		>
-			<Preloader showing={initializing} />
 			{initialized && props.children}
 		</CurrentUserContext.Provider>
 	);

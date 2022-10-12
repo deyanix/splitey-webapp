@@ -1,23 +1,6 @@
-import {
-	Button,
-	Col,
-	Form,
-	Input,
-	Popover,
-	Row,
-	Tooltip,
-	Typography,
-} from 'antd';
+import { Button, Col, Form, Input, Row, Tooltip, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faCheck,
-	faCross,
-	faEnvelope,
-	faLock,
-	faUser,
-	faUserTag,
-	faX,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link, useOutletContext } from 'react-router-dom';
 import Reaptcha from 'reaptcha';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +8,6 @@ import { yup } from '../../validation/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect, useRef } from 'react';
-import { Message } from 'yup/lib/types';
 import { useTheme } from '../../components/ThemeProvider/ThemeContext';
 import useAppTranslation from 'src/hooks/useAppTranslation';
 import { AuthenticationOutletContext } from 'src/layout/Authentication/AuthenticationLayout';

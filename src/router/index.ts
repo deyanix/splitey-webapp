@@ -1,11 +1,4 @@
-import {
-	RouteObject,
-	useLocation,
-	useMatch,
-	useMatches,
-	useNavigate,
-	useRoutes,
-} from 'react-router-dom';
+import { useLocation, useNavigate, useRoutes } from 'react-router-dom';
 import routes, { options } from './routes';
 import { useEffect } from 'react';
 import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';

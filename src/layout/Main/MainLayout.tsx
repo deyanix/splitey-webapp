@@ -5,7 +5,6 @@ import {
 	Dropdown,
 	Layout,
 	Menu,
-	MenuProps,
 	Space,
 } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -19,15 +18,22 @@ import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 import { faMoon, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
+import { useTheme } from 'src/components/ThemeProvider/ThemeContext';
 
 const MainLayout: React.FC = () => {
 	const { user, logout } = useCurrentUser();
+	const { showLoader, hideLoader } = useTheme();
 	const [collapsed, setCollapsed] = useState(false);
 
-	const handleProfileMenuClick = useCallback((key: string) => {
+	const handleProfileMenuClick = useCallback(async (key: string) => {
 		switch (key) {
 			case 'logout':
-				logout();
+				const loaderId = showLoader();
+				try {
+					await logout();
+				} finally {
+					hideLoader(loaderId);
+				}
 				break;
 		}
 	}, []);
@@ -106,7 +112,7 @@ const MainLayout: React.FC = () => {
 			</Layout.Header>
 			<Layout>
 				<Layout.Sider
-					collapsedWidth="0"
+					collapsedWidth="500"
 					trigger={null}
 					collapsible
 					collapsed={collapsed}
