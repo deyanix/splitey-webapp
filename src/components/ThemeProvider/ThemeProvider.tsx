@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { changeBodyTheme, getOsTheme, loadTheme, ThemeType } from 'src/themes';
-import Preloader from '../Preloader/Preloader';
+import ThemeLoader from '../ThemeLoader/ThemeLoader';
 import { ThemeContext } from './ThemeContext';
 import useStoredTheme from 'src/hooks/useStoredTheme';
 
@@ -58,7 +58,7 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
 				setTheme: setPendingTheme,
 			}}
 		>
-			<Preloader showing={showingLoader} />
+			<ThemeLoader showing={showingLoader} />
 			{props.children}
 		</ThemeContext.Provider>
 	);

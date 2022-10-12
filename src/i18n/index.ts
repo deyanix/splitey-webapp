@@ -1,10 +1,15 @@
-import i18next from 'i18next';
+import i18next, { ResourceLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
-import translations from './locales';
+import locales from './locales';
+import { setDefaultOptions } from 'date-fns';
+import _ from 'lodash';
 
 i18next.on('languageChanged', (lng) => {
 	document.documentElement.setAttribute('lang', lng);
+	setDefaultOptions({
+		locale: locales[lng].dateFnsLocale,
+	});
 });
 
 export default i18next
@@ -13,8 +18,11 @@ export default i18next
 	.init({
 		load: 'all',
 		fallbackLng: 'en',
-		debug: true,
-		resources: translations,
-		supportedLngs: Object.keys(translations),
+		resources: _.chain(locales)
+			.toPairs()
+			.map(([key, locale]) => [key, locale.translations])
+			.fromPairs()
+			.value(),
+		supportedLngs: _.keys(locales),
 		defaultNS: 'common',
 	});

@@ -1,52 +1,101 @@
 import {
 	Avatar,
+	Badge,
 	Breadcrumb,
 	Button,
+	Drawer,
 	Dropdown,
 	Layout,
 	Menu,
 	Space,
 } from 'antd';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons/faArrowRightFromBracket';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import { faAddressBook } from '@fortawesome/free-solid-svg-icons/faAddressBook';
 import SpliteyLogo from '../../assets/splitey_black_logo.svg';
-import { faMoon, faWallet } from '@fortawesome/free-solid-svg-icons';
+import {
+	faBars,
+	faHamburger,
+	faMoon,
+	faSun,
+	faUserGroup,
+	faWallet,
+} from '@fortawesome/free-solid-svg-icons';
 import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { useTheme } from 'src/components/ThemeProvider/ThemeContext';
+import { ThemeType } from 'src/themes';
+import AppAvatar from 'src/components/AppAvatar/AppAvatar';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { useTranslation } from 'react-i18next';
+import { useResizeDetector } from 'react-resize-detector';
 
 const MainLayout: React.FC = () => {
+	const { t } = useTranslation();
+	const { theme, setTheme } = useTheme();
 	const { user, logout } = useCurrentUser();
 	const { showLoader, hideLoader } = useTheme();
 	const [collapsed, setCollapsed] = useState(false);
+	const [mobileDrawer, setMobileDrawer] = useState<boolean>(false);
+	const lastWidth = useRef<number>();
+	const location = useLocation();
 
-	const handleProfileMenuClick = useCallback(async (key: string) => {
-		switch (key) {
-			case 'logout':
-				const loaderId = showLoader();
-				try {
-					await logout();
-				} finally {
-					hideLoader(loaderId);
-				}
-				break;
+	const handleResize = useCallback((width?: number) => {
+		if (!width) {
+			return;
+		}
+
+		const lastWidthPx = lastWidth.current ?? width;
+		if (width < 560 && lastWidthPx >= 560) {
+			setCollapsed(true);
+		}
+		if (width > 560 && lastWidthPx <= 560) {
+			setCollapsed(false);
+		}
+		setMobileDrawer(width < 560);
+		lastWidth.current = width;
+	}, []);
+
+	const { ref } = useResizeDetector({ onResize: handleResize });
+
+	const handleChangeTheme = useCallback(() => {
+		setTheme(theme === ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK);
+	}, [theme]);
+
+	const handleLogoutClick = useCallback(async () => {
+		const loaderId = showLoader();
+		try {
+			await logout();
+		} finally {
+			hideLoader(loaderId);
 		}
 	}, []);
 
 	const profileMenu = useMemo<ItemType[]>(
 		() => [
 			{
-				key: '3',
-				label: <a href="#">Dark</a>,
-				icon: <FontAwesomeIcon icon={faMoon} />,
+				key: 'theme',
+				label: theme === ThemeType.DARK ? 'Dark' : 'Light',
+				icon: (
+					<FontAwesomeIcon
+						icon={theme === ThemeType.DARK ? faMoon : faSun}
+					/>
+				),
+				onClick: handleChangeTheme,
 			},
 			{
-				key: '1',
+				key: 'settings',
 				label: <a href="#">Settings</a>,
 				icon: <FontAwesomeIcon icon={faGear} />,
 			},
@@ -57,30 +106,30 @@ const MainLayout: React.FC = () => {
 				key: 'logout',
 				label: 'Log out',
 				icon: <FontAwesomeIcon icon={faArrowRightFromBracket} />,
-				onClick: () => logout,
+				onClick: handleLogoutClick,
 			},
 		],
-		[]
+		[theme]
 	);
 
 	const siderMenu = useMemo<ItemType[]>(
 		() => [
 			{
-				key: '3',
-				label: <a href="#">Settlement</a>,
+				key: '/settlements',
+				label: <Link to="/settlements">{t('settlements')}</Link>,
 				icon: <FontAwesomeIcon icon={faWallet} />,
 			},
 			{
-				key: '1',
-				label: <a href="#">Contacts</a>,
-				icon: <FontAwesomeIcon icon={faAddressBook} />,
+				key: '/friends',
+				label: <Link to="/friends">{t('friends')}</Link>,
+				icon: <FontAwesomeIcon icon={faUserGroup} />,
 			},
 		],
 		[]
 	);
 
 	return (
-		<Layout className="main-layout">
+		<Layout ref={ref} className="main-layout">
 			<Layout.Header
 				style={{
 					display: 'flex',
@@ -88,20 +137,32 @@ const MainLayout: React.FC = () => {
 					alignItems: 'center',
 				}}
 			>
-				<SpliteyLogo className="main-layout__logo" />
+				<div
+					style={{
+						display: 'flex',
+						alignItems: 'center',
+					}}
+				>
+					<Button
+						icon={<FontAwesomeIcon icon={faBars} />}
+						onClick={() => setCollapsed(!collapsed)}
+					/>
+					<SpliteyLogo
+						className="main-layout__logo"
+						style={{ marginLeft: 16 }}
+					/>
+				</div>
 				<Dropdown
-					overlay={
-						<Menu
-							items={profileMenu}
-							onClick={({ key }) => handleProfileMenuClick(key)}
-						/>
-					}
+					overlay={<Menu items={profileMenu} />}
 					trigger={['click']}
 					placement="bottomRight"
 				>
 					<Button danger type="text" className="avatar-dropdown">
 						<Space>
-							<Avatar>{user?.firstName.at(0)}</Avatar>
+							<AppAvatar
+								firstName={user?.firstName}
+								lastName={user?.lastName}
+							/>
 							<FontAwesomeIcon
 								icon={faChevronDown}
 								color="white"
@@ -112,26 +173,35 @@ const MainLayout: React.FC = () => {
 			</Layout.Header>
 			<Layout>
 				<Layout.Sider
-					collapsedWidth="500"
-					trigger={null}
+					className="main-layout__sider"
 					collapsible
 					collapsed={collapsed}
 					onCollapse={setCollapsed}
+					trigger={null}
+					style={{ display: mobileDrawer ? 'none' : 'block' }}
 				>
 					<Menu
-						theme="dark"
-						defaultSelectedKeys={['1']}
+						selectedKeys={[location.pathname]}
 						mode="inline"
 						items={siderMenu}
 					/>
 				</Layout.Sider>
+				{mobileDrawer && (
+					<Drawer
+						className="main-layout__drawer"
+						open={!collapsed}
+						placement="left"
+						onClose={() => setCollapsed(true)}
+					>
+						<Menu
+							selectedKeys={[location.pathname]}
+							mode="inline"
+							items={siderMenu}
+						/>
+					</Drawer>
+				)}
 				<Layout>
-					<Layout.Content style={{ padding: '0 24px' }}>
-						<Breadcrumb style={{ margin: '16px 0' }}>
-							<Breadcrumb.Item>Home</Breadcrumb.Item>
-							<Breadcrumb.Item>List</Breadcrumb.Item>
-							<Breadcrumb.Item>App</Breadcrumb.Item>
-						</Breadcrumb>
+					<Layout.Content style={{ padding: '16px 24px' }}>
 						<div className="main-layout__content">
 							<Outlet />
 						</div>

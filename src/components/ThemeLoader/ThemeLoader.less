@@ -1,5 +1,5 @@
 /* Warning: Component in-dependent of theme & Ant Design */
-.preloader {
+.theme-loader {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -14,23 +14,21 @@
 	visibility: visible;
 	transition: opacity 0.3s ease;
 
-	&.preloader--entering, &.preloader--entered {
+	&.theme-loader--entering, &.theme-loader--entered {
 		opacity: 1;
 	}
 
-	&.preloader--exited {
+	&.theme-loader--exited {
 		visibility: hidden;
 	}
 
-	.preloader__spinner {
+	&.theme-loader--light {
+		background: #f0f2f5;
 		color: #000;
 	}
 
-	&.preloader--dark {
+	&.theme-loader--dark {
 		background: #1c2025;
-
-		.preloader__spinner {
-			color: #fff;
-		}
+		color: #fff;
 	}
 }

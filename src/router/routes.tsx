@@ -3,12 +3,17 @@ import AuthenticationLayout from '../layout/Authentication/AuthenticationLayout'
 import MainLayout from '../layout/Main/MainLayout';
 import SignInPage from '../pages/Authentication/SignInPage';
 import SignUpPage from '../pages/Authentication/SignUpPage';
-import DashboardPage from '../pages/Transfer/TransferCreatePage';
+import TransferCreatePage from '../pages/Transfer/TransferCreatePage';
 import ResetPasswordPage from '../pages/Authentication/ResetPasswordPage';
 import { AppRouterOptions } from 'src/router/index';
+import FriendsPage from 'src/pages/Friend/Friends/FriendsPage';
+import FriendInvitationsPage from 'src/pages/Friend/FriendInvitations/FriendInvitationsPage';
+import AddUserFriendPage from 'src/pages/Friend/AddUserFriend/AddUserFriendPage';
+import AddExternalFriendPage from 'src/pages/Friend/AddExternalFriend/AddExternalFriendPage';
+import SettlementsPage from 'src/pages/Settlement/Settlements/SettlementsPage';
 
 export const options: AppRouterOptions = {
-	defaultAuthorizedRoute: '/',
+	defaultAuthorizedRoute: '/settlements',
 	defaultGuestRoute: '/signin',
 	guestRoutes: ['/signin', '/signup', '/reset-password'],
 };
@@ -16,7 +21,29 @@ export const options: AppRouterOptions = {
 export default [
 	{
 		element: <MainLayout />,
-		children: [{ path: '/', element: <DashboardPage /> }],
+		children: [
+			{ path: '/friends', element: <FriendsPage /> },
+			{
+				path: '/friends/invitations',
+				element: <FriendInvitationsPage />,
+			},
+			{
+				path: '/friends/add-user',
+				element: <AddUserFriendPage />,
+			},
+			{
+				path: '/friends/add-external',
+				element: <AddExternalFriendPage />,
+			},
+			{
+				path: '/settlements',
+				element: <SettlementsPage />,
+			},
+			{
+				path: '/settlements/create-transfer',
+				element: <TransferCreatePage />,
+			},
+		],
 	},
 	{
 		element: <AuthenticationLayout />,
