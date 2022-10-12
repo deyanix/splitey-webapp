@@ -19,7 +19,7 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 	const [interceptorId, setInterceptorId] = useState<number>();
 	const [initializing, setInitializing] = useState<boolean>(false);
 	const [initialized, setInitialized] = useState<boolean>(false);
-	const { storedAuth, setStoredAuth, clearStoredAuth } = useStoredAuth();
+	const { storedAuth, setStoredAuth } = useStoredAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -30,48 +30,55 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 		});
 	}, []);
 
-	const setBothResult = useCallback(
-		(result: AuthenticationResult | undefined): void => {
+	const setInterceptor = useCallback(
+		(accessToken: string | undefined): void => {
 			if (_.isNumber(interceptorId)) {
-				console.log('EJECT12!!!!', interceptorId);
 				api.interceptors.request.eject(interceptorId);
 				setInterceptorId(undefined);
 			}
-			if (result) {
+			if (!_.isNil(accessToken)) {
 				const localInterceptorId = api.interceptors.request.use(
 					(request) => {
 						_.merge(request.headers, {
-							Authorization: `Bearer ${result.accessToken}`,
+							Authorization: `Bearer ${accessToken}`,
 						});
 						return request;
 					}
 				);
-				console.log('implement', localInterceptorId);
 				setInterceptorId(localInterceptorId);
 			}
-
-			setAuthResult(result);
-			setStoredAuth(_.omit(result, 'accessToken'));
 		},
 		[interceptorId]
 	);
 
-	const refreshToken = useCallback(async (token: string): Promise<void> => {
-		setBothResult(await AuthService.refresh(token));
-		setUser(await UserService.getCurrent());
-	}, []);
+	const setBothResult = useCallback(
+		(result: AuthenticationResult | undefined): void => {
+			setInterceptor(result?.accessToken);
+			setAuthResult(result);
+			setStoredAuth(_.omit(result, 'accessToken'));
+		},
+		[setInterceptor]
+	);
+
+	const refreshToken = useCallback(
+		async (token: string): Promise<void> => {
+			setBothResult(await AuthService.refresh(token));
+			setUser(await UserService.getCurrent());
+		},
+		[setBothResult]
+	);
 
 	const load = useCallback(async (): Promise<void> => {
-		if (!_.isNil(storedAuth)) {
+		if (!_.isNil(storedAuth) && !_.isNil(storedAuth.refreshToken)) {
 			await refreshToken(storedAuth.refreshToken);
 		}
-	}, []);
+	}, [storedAuth, refreshToken]);
 
 	const refresh = useCallback(async (): Promise<void> => {
 		if (!_.isNil(authResult)) {
 			await refreshToken(authResult.refreshToken);
 		}
-	}, []);
+	}, [authResult, refreshToken]);
 
 	const login = useCallback(
 		async (
@@ -84,24 +91,23 @@ export const CurrentUserProvider: React.FC<React.PropsWithChildren> = (
 					login,
 					password,
 					rememberMe,
-					deviceUuid: authResult?.deviceUuid,
+					deviceUuid: storedAuth?.deviceUuid,
 				})
 			);
 			setUser(await UserService.getCurrent());
 			navigate(options.defaultAuthorizedRoute);
 		},
-		[authResult]
+		[storedAuth, setBothResult]
 	);
 
 	const logout = useCallback(async (): Promise<void> => {
 		if (!_.isNil(authResult)) {
 			await AuthService.invalidate(authResult.refreshToken);
-			setBothResult(undefined);
 			setUser(undefined);
-			clearStoredAuth();
+			setBothResult(undefined);
 			navigate(options.defaultGuestRoute);
 		}
-	}, [authResult]);
+	}, [authResult, storedAuth]);
 
 	return (
 		<CurrentUserContext.Provider

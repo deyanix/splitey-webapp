@@ -1,10 +1,15 @@
 import { Button, Checkbox, Form, Input, Space, Typography } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserContext';
+import { yup } from 'src/validation/yup';
+import { AuthenticationOutletContext } from 'src/layout/Authentication/AuthenticationLayout';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import useAppTranslation from 'src/hooks/useAppTranslation';
 
 export interface SignInForm {
 	login: string;
@@ -12,12 +17,31 @@ export interface SignInForm {
 	rememberMe: boolean;
 }
 
+const schema = yup
+	.object({
+		login: yup.string().required(),
+		password: yup.string().required(),
+		rememberMe: yup.boolean(),
+	})
+	.required();
+
 export default function () {
+	const { setWidth } = useOutletContext<AuthenticationOutletContext>();
 	const { t } = useTranslation();
+	const { tm } = useAppTranslation();
 	const { login } = useCurrentUser();
-	const navigate = useNavigate();
+	const { handleSubmit, control, formState, setValue } = useForm<SignInForm>({
+		resolver: yupResolver(schema, {
+			abortEarly: false,
+		}),
+	});
+	const { errors } = formState;
 
 	const [loading, setLoading] = useState<boolean>(false);
+
+	useEffect(() => {
+		setWidth(320);
+	}, []);
 
 	const onSubmit = async (data: SignInForm): Promise<void> => {
 		setLoading(true);
@@ -29,57 +53,67 @@ export default function () {
 	};
 
 	return (
-		<Form
-			initialValues={{ remember: true }}
-			onFinish={onSubmit}
-			style={{ width: '320px' }}
-		>
+		<Form onFinish={handleSubmit(onSubmit)}>
 			<Space direction="vertical" style={{ width: '100%' }}>
 				<Form.Item
-					name="login"
-					rules={[
-						{
-							required: true,
-							message: 'Please input your login!',
-						},
-					]}
+					hasFeedback
+					validateStatus={errors.login?.message ? 'error' : undefined}
+					help={tm(errors.login?.message)}
 				>
-					<Input
-						prefix={<FontAwesomeIcon icon={faUser} />}
-						placeholder={t('usernameOrEmail')}
-						size="large"
-						autoComplete="off"
-						disabled={loading}
+					<Controller
+						name="login"
+						control={control}
+						render={({ field }) => (
+							<Input
+								prefix={<FontAwesomeIcon icon={faUser} />}
+								placeholder={t('usernameOrEmail')}
+								size="large"
+								autoComplete="off"
+								{...field}
+							/>
+						)}
 					/>
 				</Form.Item>
 				<Form.Item
-					name="password"
-					rules={[
-						{
-							required: true,
-							message: t(''),
-						},
-					]}
+					hasFeedback
+					validateStatus={
+						errors.password?.message ? 'error' : undefined
+					}
+					help={tm(errors.password?.message)}
 				>
-					<Input.Password
-						prefix={<FontAwesomeIcon icon={faLock} />}
-						placeholder={t('password')}
-						size="large"
-						autoComplete="off"
-						disabled={loading}
+					<Controller
+						name="password"
+						control={control}
+						render={({ field }) => (
+							<Input.Password
+								prefix={<FontAwesomeIcon icon={faLock} />}
+								placeholder={t('password')}
+								size="large"
+								autoComplete="off"
+								{...field}
+							/>
+						)}
 					/>
 				</Form.Item>
 			</Space>
 			<Form.Item>
-				<Form.Item name="remember" valuePropName="checked" noStyle>
-					<Checkbox>{t('rememberMe')}</Checkbox>
+				<Form.Item name="remember" valuePropName="value" noStyle>
+					<Controller
+						name="rememberMe"
+						control={control}
+						render={({ field }) => (
+							<Checkbox checked={field.value} {...field}>
+								{t('rememberMe')}
+							</Checkbox>
+						)}
+					/>
 				</Form.Item>
 
 				<Link to="/reset-password" style={{ float: 'right' }}>
 					{t('forgotPassword')}
 				</Link>
 			</Form.Item>
-			<Form.Item>
+			<Form.Item noStyle>
 				<Button
 					type="primary"
 					htmlType="submit"

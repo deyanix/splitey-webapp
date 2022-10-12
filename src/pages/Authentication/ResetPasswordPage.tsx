@@ -1,11 +1,18 @@
 import { Button, Form, Input, Space, Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { AuthenticationOutletContext } from 'src/layout/Authentication/AuthenticationLayout';
 
 export default function () {
+	const { setWidth } = useOutletContext<AuthenticationOutletContext>();
 	const { t } = useTranslation();
+
+	useEffect(() => {
+		setWidth(320);
+	}, []);
 
 	return (
 		<Form>

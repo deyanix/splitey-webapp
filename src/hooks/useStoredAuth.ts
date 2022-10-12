@@ -2,9 +2,8 @@ import _ from 'lodash';
 import { AuthenticationResult } from 'src/api/Auth/AuthModels';
 
 export const AUTHENTICATION_RESULT_KEY = 'splitey_authentication_result';
-export type StoredAuthenticationResult = Omit<
-	AuthenticationResult,
-	'accessToken'
+export type StoredAuthenticationResult = Partial<
+	Omit<AuthenticationResult, 'accessToken'>
 >;
 
 export default function () {

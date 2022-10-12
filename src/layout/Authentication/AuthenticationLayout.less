@@ -5,7 +5,6 @@
 	.authentication-layout__container {
 		background-color: @app-background;
 		height: 100%;
-		width: fit-content;
 		min-width: 320px;
 		margin: auto;
 		display: flex;
@@ -26,13 +25,13 @@
 
 	.authentication-layout__card-wrapper {
 		position: relative;
+		width: 100%;
+		transition: max-width 200ms ease;
 	}
 
 	.authentication-layout__card {
-		width: 100%;
 		background-color: @app-background-content;
 		overflow: hidden;
-		transition: width 500ms;
 
 		.ant-card-body {
 			padding: 16px;
@@ -56,17 +55,15 @@
 			padding: 0;
 		}
 	}
-}
 
+	.authentication-layout__page-enter {
+		opacity: 0;
+		transform: scale(0.5);
+	}
 
-
-.page-enter {
-	opacity: 0;
-	transform: scale(0.5);
-}
-
-.page-enter-active {
-	opacity: 1;
-	transform: scale(1);
-	transition: opacity 300ms, transform 300ms;
+	.authentication-layout__page-enter-active {
+		opacity: 1;
+		transform: scale(1);
+		transition: opacity 300ms, transform 300ms;
+	}
 }

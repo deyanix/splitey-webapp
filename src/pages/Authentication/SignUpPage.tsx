@@ -18,15 +18,17 @@ import {
 	faUserTag,
 	faX,
 } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import Reaptcha from 'reaptcha';
 import { useTranslation } from 'react-i18next';
 import { yup } from '../../validation/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Message } from 'yup/lib/types';
 import { useTheme } from '../../components/ThemeProvider/ThemeContext';
+import useAppTranslation from 'src/hooks/useAppTranslation';
+import { AuthenticationOutletContext } from 'src/layout/Authentication/AuthenticationLayout';
 
 const schema = yup
 	.object({
@@ -42,36 +44,29 @@ const schema = yup
 	.required();
 
 export default function () {
+	const { setWidth } = useOutletContext<AuthenticationOutletContext>();
 	const { theme } = useTheme();
 	const { t, i18n } = useTranslation();
+	const { tm } = useAppTranslation();
 	const { handleSubmit, control, formState, setValue } = useForm({
 		resolver: yupResolver(schema, {
 			abortEarly: false,
 		}),
 	});
-	const { errors, touchedFields } = formState;
+	const { errors } = formState;
+
 	const reaptcha = useRef<Reaptcha | null>();
+
+	useEffect(() => {
+		setWidth(480);
+	}, []);
 
 	function onSubmit(data: any): void {
 		reaptcha.current?.reset();
 	}
 
-	function tMessage(message: Message | undefined): string | undefined {
-		if (!message) {
-			return undefined;
-		}
-
-		if (typeof message === 'string') {
-			return t(message);
-		}
-		if (typeof message === 'object') {
-			return t(message.key as string, message.options as object);
-		}
-		console.error('unsupported message', message);
-	}
-
 	return (
-		<Form onFinish={handleSubmit(onSubmit)} style={{ maxWidth: '576px' }}>
+		<Form onFinish={handleSubmit(onSubmit)}>
 			<Typography.Title level={3} style={{ textAlign: 'center' }}>
 				{t('createAnAccount')}
 			</Typography.Title>
@@ -82,7 +77,7 @@ export default function () {
 						validateStatus={
 							errors.email?.message ? 'error' : undefined
 						}
-						help={tMessage(errors.email?.message)}
+						help={tm(errors.email?.message)}
 					>
 						<Controller
 							name="email"
@@ -106,7 +101,7 @@ export default function () {
 						validateStatus={
 							errors.username?.message ? 'error' : undefined
 						}
-						help={tMessage(errors.username?.message)}
+						help={tm(errors.username?.message)}
 					>
 						<Controller
 							name="username"
@@ -130,7 +125,7 @@ export default function () {
 						}
 						help={
 							errors.password?.message
-								? tMessage(errors.password?.message)
+								? tm(errors.password?.message)
 								: undefined
 						}
 					>
@@ -139,7 +134,7 @@ export default function () {
 							control={control}
 							render={({ field }) => (
 								<Tooltip
-									title={tMessage(
+									title={tm(
 										'validation:passwordRequirements'
 									)}
 								>
@@ -164,7 +159,7 @@ export default function () {
 								? 'error'
 								: undefined
 						}
-						help={tMessage(errors.confirmPassword?.message)}
+						help={tm(errors.confirmPassword?.message)}
 					>
 						<Controller
 							name="confirmPassword"
@@ -189,7 +184,7 @@ export default function () {
 						onVerify={(response) => setValue('captcha', response)}
 					/>
 					<Typography.Text type="danger">
-						{tMessage(errors.captcha?.message)}
+						{tm(errors.captcha?.message)}
 					</Typography.Text>
 				</Col>
 				<Col span={24}>

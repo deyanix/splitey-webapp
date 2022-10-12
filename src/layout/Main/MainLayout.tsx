@@ -95,7 +95,7 @@ const MainLayout: React.FC = () => {
 				>
 					<Button danger type="text" className="avatar-dropdown">
 						<Space>
-							<Avatar>M</Avatar>
+							<Avatar>{user?.firstName.at(0)}</Avatar>
 							<FontAwesomeIcon
 								icon={faChevronDown}
 								color="white"
