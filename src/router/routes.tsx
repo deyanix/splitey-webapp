@@ -11,6 +11,7 @@ import FriendInvitationsPage from 'src/pages/Friend/FriendInvitations/FriendInvi
 import AddUserFriendPage from 'src/pages/Friend/AddUserFriend/AddUserFriendPage';
 import AddExternalFriendPage from 'src/pages/Friend/AddExternalFriend/AddExternalFriendPage';
 import SettlementsPage from 'src/pages/Settlement/Settlements/SettlementsPage';
+import EditExternalFriendPage from 'src/pages/Friend/EditExternalFriend/EditExternalFriendPage';
 
 export const options: AppRouterOptions = {
 	defaultAuthorizedRoute: '/settlements',
@@ -30,6 +31,10 @@ export default [
 			{
 				path: '/friends/add-user',
 				element: <AddUserFriendPage />,
+			},
+			{
+				path: '/friends/:friendId/edit',
+				element: <EditExternalFriendPage />,
 			},
 			{
 				path: '/friends/add-external',

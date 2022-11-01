@@ -2,6 +2,7 @@ import AppAvatar from 'src/components/AppAvatar/AppAvatar';
 import { List, Typography } from 'antd';
 
 export interface UserListItemMetaProps {
+	id?: number;
 	person: {
 		firstName?: string;
 		lastName?: string;
@@ -15,6 +16,7 @@ export default function (props: UserListItemMetaProps) {
 			style={{ alignItems: 'center' }}
 			avatar={
 				<AppAvatar
+					id={props.id}
 					firstName={props.person.firstName}
 					lastName={props.person.lastName}
 				/>

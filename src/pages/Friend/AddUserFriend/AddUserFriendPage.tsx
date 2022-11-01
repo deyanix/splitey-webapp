@@ -2,45 +2,101 @@ import { Input, PageHeader } from 'antd/es';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faCheck,
-	faClose,
-	faSearch,
-	faUserPlus,
-} from '@fortawesome/free-solid-svg-icons';
-import { useMemo, useState } from 'react';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import _ from 'lodash';
 import { User } from 'src/api/User/UserModels';
-import UserService from 'src/api/User/UserService';
-import { Button, List, Space } from 'antd';
-import UserListItemMeta from 'src/components/UserListItemMeta/UserListItemMeta';
+import { List, message } from 'antd';
+import { AddUserItem } from 'src/pages/Friend/AddUserFriend/AddUserItem';
+import FriendService from 'src/api/Friend/FriendService';
+import { UserRelation, UserWithRelation } from 'src/api/Friend/FriendModels';
 
 export default function () {
 	const { t } = useTranslation();
+	const [name, setName] = useState<string>('');
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState<boolean>(false);
-	const [users, setUsers] = useState<User[]>([]);
+	const [users, setUsers] = useState<UserWithRelation[]>([]);
+
+	const fetchUsers = useCallback(async (name: string) => {
+		setLoading(true);
+		try {
+			setUsers(await FriendService.searchUsers(name));
+		} finally {
+			setLoading(false);
+		}
+	}, []);
 
 	const fetchUsersWithDebounce = useMemo(() => {
-		const fetchUsers = async (val: string) => {
+		return _.debounce(fetchUsers, 400);
+	}, [fetchUsers]);
+
+	const handleChangeName = useCallback(
+		(evt: ChangeEvent<HTMLInputElement>) => {
+			const name = evt.currentTarget.value;
+			setName(name);
+			fetchUsersWithDebounce(name);
+		},
+		[]
+	);
+
+	const handleAcceptInvitation = useCallback(
+		async (relation: UserRelation) => {
+			const invitationId = relation.receivedInvitationId;
+			if (_.isNil(invitationId)) {
+				return;
+			}
+
 			setLoading(true);
 			try {
-				console.log(val);
-				setUsers(await UserService.searchUsers(val));
+				await FriendService.acceptInvitation(invitationId);
+				message.info(t('successfullyAcceptedInvitation'));
+				await fetchUsers(name);
 			} finally {
 				setLoading(false);
 			}
-		};
+		},
+		[name]
+	);
 
-		return _.debounce(fetchUsers, 400);
-	}, []);
+	const handleDeclineInvitation = useCallback(
+		async (relation: UserRelation) => {
+			const invitationId = relation.receivedInvitationId;
+			if (_.isNil(invitationId)) {
+				return;
+			}
+
+			setLoading(true);
+			try {
+				await FriendService.declineInvitation(invitationId);
+				message.info(t('successfullyDeclinedInvitation'));
+				await fetchUsers(name);
+			} finally {
+				setLoading(false);
+			}
+		},
+		[name]
+	);
+
+	const handleInvite = useCallback(
+		async (user: User) => {
+			setLoading(true);
+			try {
+				await FriendService.createInvitations(user.id);
+				message.info(t('successfullyInvited'));
+				await fetchUsers(name);
+			} finally {
+				setLoading(false);
+			}
+		},
+		[name]
+	);
 
 	return (
 		<PageHeader title={t('addFriend')} onBack={() => navigate('/friends')}>
 			<Input
-				onChange={(evt) =>
-					fetchUsersWithDebounce(evt.currentTarget.value)
-				}
+				value={name}
+				onChange={handleChangeName}
 				placeholder={t('searchFriends')}
 				prefix={<FontAwesomeIcon icon={faSearch} />}
 				style={{ marginBottom: 16 }}
@@ -48,16 +104,17 @@ export default function () {
 			<List
 				loading={loading}
 				dataSource={users}
-				renderItem={(item) => (
-					<List.Item key={item.id}>
-						<UserListItemMeta person={item} />
-						<Space>
-							<Button
-								icon={<FontAwesomeIcon icon={faUserPlus} />}
-								type="primary"
-							/>
-						</Space>
-					</List.Item>
+				renderItem={(user) => (
+					<AddUserItem
+						user={user}
+						onAcceptInvitation={() =>
+							handleAcceptInvitation(user.relation)
+						}
+						onDeclineInvitation={() =>
+							handleDeclineInvitation(user.relation)
+						}
+						onInvite={() => handleInvite(user.user)}
+					/>
 				)}
 			/>
 		</PageHeader>

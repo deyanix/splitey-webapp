@@ -30,6 +30,12 @@ export default {
 	addWithoutAccount: 'Add without account',
 	addFriend: 'Add friend',
 	createFriend: 'Create friend',
-	successfullyDeletedFriend: 'Successfully deleted friend',
+	editFriend: 'Edit friend',
+	successfullyDeletedFriend: 'Deleted the friend',
+	successfullyCreatedFriend: 'Created the friend',
+	successfullyUpdatedFriend: 'Updated the friend',
+	successfullyInvited: 'Invited the friend',
+	successfullyAcceptedInvitation: 'Accepted the friend invitation',
+	successfullyDeclinedInvitation: 'Declined the friend invitation',
 	settlements: 'Settlements',
 };

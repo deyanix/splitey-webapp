@@ -1,36 +1,23 @@
 import {
-	Avatar,
 	Badge,
 	Button,
-	Checkbox,
-	Divider,
 	Dropdown,
 	Input,
-	InputNumber,
 	List,
 	Menu,
 	message,
 	PageHeader,
-	Space,
-	Typography,
 } from 'antd';
 import FriendService from 'src/api/Friend/FriendService';
-import { useCallback, useEffect, useState, useTransition } from 'react';
-import { Friend, FriendInvitation } from 'src/api/Friend/FriendModels';
+import { useCallback, useEffect, useState } from 'react';
+import { Friend } from 'src/api/Friend/FriendModels';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppAvatar from 'src/components/AppAvatar/AppAvatar';
 import {
-	faCheck,
-	faClose,
 	faEllipsisVertical,
 	faEnvelope,
 	faPen,
-	faPerson,
 	faSearch,
 	faTrash,
-	faUser,
-	faUserGroup,
-	faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -102,7 +89,14 @@ export default function () {
 				dataSource={friends}
 				renderItem={(item) => (
 					<List.Item key={`e${item.externalFriendId}u${item.userId}`}>
-						<UserListItemMeta person={item} />
+						<UserListItemMeta
+							id={
+								item.userId ??
+								item.externalFriendId ??
+								undefined
+							}
+							person={item}
+						/>
 						<Dropdown
 							trigger={['click']}
 							overlay={
@@ -110,7 +104,13 @@ export default function () {
 									items={[
 										{
 											key: 'edit',
-											label: t('edit'),
+											label: (
+												<Link
+													to={`/friends/${item.externalFriendId}/edit`}
+												>
+													{t('edit')}
+												</Link>
+											),
 											icon: (
 												<FontAwesomeIcon icon={faPen} />
 											),

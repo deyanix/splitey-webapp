@@ -1,32 +1,13 @@
-import {
-	Avatar,
-	Badge,
-	Breadcrumb,
-	Button,
-	Drawer,
-	Dropdown,
-	Layout,
-	Menu,
-	Space,
-} from 'antd';
-import React, {
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useMemo,
-	useRef,
-	useState,
-} from 'react';
+import { Button, Drawer, Dropdown, Layout, Menu, Space } from 'antd';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons/faArrowRightFromBracket';
 import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
-import { faAddressBook } from '@fortawesome/free-solid-svg-icons/faAddressBook';
 import SpliteyLogo from '../../assets/splitey_black_logo.svg';
 import {
 	faBars,
-	faHamburger,
 	faMoon,
 	faSun,
 	faUserGroup,
@@ -37,7 +18,6 @@ import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { useTheme } from 'src/components/ThemeProvider/ThemeContext';
 import { ThemeType } from 'src/themes';
 import AppAvatar from 'src/components/AppAvatar/AppAvatar';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useTranslation } from 'react-i18next';
 import { useResizeDetector } from 'react-resize-detector';
 
@@ -160,6 +140,7 @@ const MainLayout: React.FC = () => {
 					<Button danger type="text" className="avatar-dropdown">
 						<Space>
 							<AppAvatar
+								id={user?.id}
 								firstName={user?.firstName}
 								lastName={user?.lastName}
 							/>

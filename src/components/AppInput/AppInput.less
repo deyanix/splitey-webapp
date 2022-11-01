@@ -1,0 +1,27 @@
+.app-input {
+  position: relative;
+
+  > label {
+    font-size: 12px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 12px;
+    top: 12px;
+    transition: 0.2s ease all;
+  }
+
+  > .ant-input {
+    padding: 16px 12px 4px 11px;
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:not(:placeholder-shown) + label, &:focus + label   {
+      top: 6px;
+      font-size: 10px;
+      color: #999;
+    }
+  }
+}

@@ -30,6 +30,12 @@ export default {
 	addWithoutAccount: 'Dodaj bez konta',
 	addFriend: 'Dodaj znajomego',
 	createFriend: 'Utwórz znajomego',
-	successfullyDeletedFriend: 'Pomyślnie usunięto znajomego',
+	editFriend: 'Edycja znajomego',
+	successfullyDeletedFriend: 'Usunięto znajomego',
+	successfullyCreatedFriend: 'Utworzono znajomego',
+	successfullyUpdatedFriend: 'Zaktualizowano znajomego',
+	successfullyInvited: 'Wysłano zaproszenie do znajomych',
+	successfullyAcceptedInvitation: 'Zaakceptowano zaproszenie',
+	successfullyDeclinedInvitation: 'Odrzucono zaproszenie',
 	settlements: 'Rozliczenia',
 };

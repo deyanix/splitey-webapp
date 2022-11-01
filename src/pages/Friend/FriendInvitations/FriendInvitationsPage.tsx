@@ -2,11 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { FriendInvitation } from 'src/api/Friend/FriendModels';
 import { useTranslation } from 'react-i18next';
 import FriendService from 'src/api/Friend/FriendService';
-import { Button, List, PageHeader, Space } from 'antd';
+import { Button, List, message, PageHeader, Space } from 'antd';
 import UserListItemMeta from 'src/components/UserListItemMeta/UserListItemMeta';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
-import AddFriendDropdown from 'src/pages/Friend/Friends/AddFriendDropdown';
 import { useNavigate } from 'react-router-dom';
 
 export default function () {
@@ -34,6 +33,7 @@ export default function () {
 			setLoading(true);
 			try {
 				await FriendService.acceptInvitation(invitation.id);
+				message.info(t('successfullyAcceptedInvitation'));
 				await reload();
 			} finally {
 				setLoading(false);
@@ -46,7 +46,8 @@ export default function () {
 		async (invitation: FriendInvitation) => {
 			setLoading(true);
 			try {
-				await FriendService.acceptInvitation(invitation.id);
+				await FriendService.declineInvitation(invitation.id);
+				message.info(t('successfullyDeclinedInvitation'));
 				await reload();
 			} finally {
 				setLoading(false);

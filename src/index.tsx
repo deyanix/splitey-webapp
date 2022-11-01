@@ -7,8 +7,10 @@ import { setConfig } from 'react-hot-loader';
 
 setConfig({ ErrorOverlay: () => null });
 ReactDOM.render(
-	<BrowserRouter>
-		<App />
-	</BrowserRouter>,
+	<React.StrictMode>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</React.StrictMode>,
 	document.getElementById('app')
 );
