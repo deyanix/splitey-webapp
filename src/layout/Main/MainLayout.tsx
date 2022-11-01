@@ -21,32 +21,36 @@ import { useTranslation } from 'react-i18next';
 import { useResizeDetector } from 'react-resize-detector';
 import IndividualAvatar from 'src/components/Individual/IndividualAvatar';
 import { mapUserToIndividual } from 'src/components/Individual/IndividualUtilities';
+import _ from 'lodash';
 
 const MainLayout: React.FC = () => {
 	const { t } = useTranslation();
 	const { theme, setTheme } = useTheme();
 	const { user, logout } = useCurrentUser();
 	const { showLoader, hideLoader } = useTheme();
-	const [collapsed, setCollapsed] = useState(false);
+	const [collapsed, setCollapsed] = useState<boolean>();
 	const [mobileDrawer, setMobileDrawer] = useState<boolean>(false);
 	const lastWidth = useRef<number>();
 	const location = useLocation();
 
-	const handleResize = useCallback((width?: number) => {
-		if (!width) {
-			return;
-		}
+	const handleResize = useCallback(
+		(width?: number) => {
+			if (!width) {
+				return;
+			}
 
-		const lastWidthPx = lastWidth.current ?? width;
-		if (width < 560 && lastWidthPx >= 560) {
-			setCollapsed(true);
-		}
-		if (width > 560 && lastWidthPx <= 560) {
-			setCollapsed(false);
-		}
-		setMobileDrawer(width < 560);
-		lastWidth.current = width;
-	}, []);
+			const lastWidthPx = lastWidth.current ?? width;
+			if (width < 560 && (_.isNil(collapsed) || lastWidthPx >= 560)) {
+				setCollapsed(true);
+			}
+			if (width > 560 && (_.isNil(collapsed) || lastWidthPx <= 560)) {
+				setCollapsed(false);
+			}
+			setMobileDrawer(width < 560);
+			lastWidth.current = width;
+		},
+		[collapsed]
+	);
 
 	const { ref } = useResizeDetector({ onResize: handleResize });
 
