@@ -37,5 +37,9 @@ export default {
 	successfullyInvited: 'Invited the friend',
 	successfullyAcceptedInvitation: 'Accepted the friend invitation',
 	successfullyDeclinedInvitation: 'Declined the friend invitation',
+	incoming: 'Incoming',
+	outgoing: 'Outgoing',
+	cancelledInvitation: 'Cancelled the friend invitation',
 	settlements: 'Settlements',
+	genericError: 'Something went wrong',
 };

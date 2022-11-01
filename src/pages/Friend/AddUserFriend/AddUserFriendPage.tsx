@@ -22,6 +22,8 @@ export default function () {
 		setLoading(true);
 		try {
 			setUsers(await FriendService.searchUsers(name));
+		} catch {
+			message.error(t('genericError'));
 		} finally {
 			setLoading(false);
 		}
@@ -52,6 +54,8 @@ export default function () {
 				await FriendService.acceptInvitation(invitationId);
 				message.info(t('successfullyAcceptedInvitation'));
 				await fetchUsers(name);
+			} catch {
+				message.error(t('genericError'));
 			} finally {
 				setLoading(false);
 			}
@@ -71,6 +75,29 @@ export default function () {
 				await FriendService.declineInvitation(invitationId);
 				message.info(t('successfullyDeclinedInvitation'));
 				await fetchUsers(name);
+			} catch {
+				message.error(t('genericError'));
+			} finally {
+				setLoading(false);
+			}
+		},
+		[name]
+	);
+
+	const handleCancelInvitation = useCallback(
+		async (relation: UserRelation) => {
+			const invitationId = relation.sentInvitationId;
+			if (_.isNil(invitationId)) {
+				return;
+			}
+
+			setLoading(true);
+			try {
+				await FriendService.cancelInvitation(invitationId);
+				message.info(t('cancelledInvitation'));
+				await fetchUsers(name);
+			} catch {
+				message.error(t('genericError'));
 			} finally {
 				setLoading(false);
 			}
@@ -85,6 +112,8 @@ export default function () {
 				await FriendService.createInvitations(user.id);
 				message.info(t('successfullyInvited'));
 				await fetchUsers(name);
+			} catch {
+				message.error(t('genericError'));
 			} finally {
 				setLoading(false);
 			}
@@ -112,6 +141,9 @@ export default function () {
 						}
 						onDeclineInvitation={() =>
 							handleDeclineInvitation(user.relation)
+						}
+						onCancelInvitation={() =>
+							handleCancelInvitation(user.relation)
 						}
 						onInvite={() => handleInvite(user.user)}
 					/>

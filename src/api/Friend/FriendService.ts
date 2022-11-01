@@ -33,6 +33,9 @@ export default {
 	async getInvitations(): Promise<FriendInvitation[]> {
 		return (await api.get('/friends/invitations')).data;
 	},
+	async getSentInvitations(): Promise<FriendInvitation[]> {
+		return (await api.get('/friends/invitations/sent')).data;
+	},
 	async createInvitations(recipientId: number): Promise<void> {
 		await api.post(`/friends/invitations`, { recipientId });
 	},
@@ -41,6 +44,9 @@ export default {
 	},
 	async declineInvitation(id: number): Promise<void> {
 		await api.post(`/friends/invitations/${id}/decline`);
+	},
+	async cancelInvitation(id: number): Promise<void> {
+		await api.post(`/friends/invitations/${id}/cancel`);
 	},
 	async searchUsers(name: string): Promise<UserWithRelation[]> {
 		return (await api.get('/friends/users', { params: { name } })).data;

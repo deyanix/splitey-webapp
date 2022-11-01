@@ -2,11 +2,11 @@ import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'src/components/ThemeProvider/ThemeContext';
 import { ThemeType } from 'src/themes';
+import { Individual } from 'src/components/Individual/IndividualModels';
+import _ from 'lodash';
 
 export interface AppAvatarProps {
-	id?: number;
-	firstName?: string;
-	lastName?: string;
+	individual?: Individual;
 }
 
 const normalizeHash = (hash: number, min: number, max: number) => {
@@ -41,13 +41,18 @@ export default function (props: React.PropsWithChildren<AppAvatarProps>) {
 	const [color, setColor] = useState<string>('');
 
 	useEffect(() => {
-		const name = [props.firstName, props.lastName, props.id].join('');
+		if (_.isNil(props.individual)) {
+			setColor(theme === ThemeType.LIGHT ? '#194c6b' : '#455765');
+			return;
+		}
+
+		const name = [props.individual.type, props.individual.id].join('');
 		const saturationRange: SaturationRange = [30, 60];
 		const lightnessRange: LightnessRange =
 			theme === ThemeType.LIGHT ? [45, 55] : [60, 70];
 
 		setColor(generateHsl(name, saturationRange, lightnessRange));
-	}, [props.firstName, props.lastName, props.id, theme]);
+	}, [props.individual, theme]);
 
 	return (
 		<Avatar
@@ -56,8 +61,8 @@ export default function (props: React.PropsWithChildren<AppAvatarProps>) {
 				backgroundColor: color,
 			}}
 		>
-			{props.firstName?.charAt(0).toLocaleUpperCase()}
-			{props.lastName?.charAt(0).toLocaleUpperCase()}
+			{props.individual?.firstName.charAt(0).toLocaleUpperCase()}
+			{props.individual?.lastName.charAt(0).toLocaleUpperCase()}
 			{props.children}
 		</Avatar>
 	);

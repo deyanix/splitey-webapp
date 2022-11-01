@@ -19,11 +19,11 @@ import {
 	faSearch,
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
-import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
-import UserListItemMeta from 'src/components/UserListItemMeta/UserListItemMeta';
 import AddFriendDropdown from 'src/pages/Friend/Friends/AddFriendDropdown';
 import { Link } from 'react-router-dom';
+import IndividualItemMeta from 'src/components/Individual/IndividualItemMeta';
+import { IndividualType } from 'src/components/Individual/IndividualModels';
 
 export default function () {
 	const { t } = useTranslation();
@@ -32,7 +32,7 @@ export default function () {
 	const [friends, setFriends] = useState<Friend[]>([]);
 
 	useEffect(() => {
-		reload();
+		void reload();
 	}, []);
 
 	const reload = useCallback(async () => {
@@ -47,13 +47,10 @@ export default function () {
 	const deleteFriend = useCallback(async (friend: Friend) => {
 		setLoading(true);
 		try {
-			if (_.isNumber(friend.userId)) {
-				await FriendService.deleteUserFriend(friend.userId);
-			}
-			if (_.isNumber(friend.externalFriendId)) {
-				await FriendService.deleteExternalFriend(
-					friend.externalFriendId
-				);
+			if (friend.type === IndividualType.USER) {
+				await FriendService.deleteUserFriend(friend.id);
+			} else if (friend.type === IndividualType.EXTERNAL_FRIEND) {
+				await FriendService.deleteExternalFriend(friend.id);
 			}
 			message.info(t('successfullyDeletedFriend'));
 			await reload();
@@ -88,15 +85,8 @@ export default function () {
 				loading={loading}
 				dataSource={friends}
 				renderItem={(item) => (
-					<List.Item key={`e${item.externalFriendId}u${item.userId}`}>
-						<UserListItemMeta
-							id={
-								item.userId ??
-								item.externalFriendId ??
-								undefined
-							}
-							person={item}
-						/>
+					<List.Item key={`${item.type}${item.id}`}>
+						<IndividualItemMeta individual={item} />
 						<Dropdown
 							trigger={['click']}
 							overlay={
@@ -106,7 +96,7 @@ export default function () {
 											key: 'edit',
 											label: (
 												<Link
-													to={`/friends/${item.externalFriendId}/edit`}
+													to={`/friends/${item.id}/edit`}
 												>
 													{t('edit')}
 												</Link>

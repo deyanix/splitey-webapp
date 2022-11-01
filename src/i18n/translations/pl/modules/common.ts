@@ -37,5 +37,9 @@ export default {
 	successfullyInvited: 'Wysłano zaproszenie do znajomych',
 	successfullyAcceptedInvitation: 'Zaakceptowano zaproszenie',
 	successfullyDeclinedInvitation: 'Odrzucono zaproszenie',
+	incoming: 'Otrzymane',
+	outgoing: 'Wysłane',
+	cancelledInvitation: 'Anulowano zaproszenie',
 	settlements: 'Rozliczenia',
+	genericError: 'Coś poszło nie tak',
 };

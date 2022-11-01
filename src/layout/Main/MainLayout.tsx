@@ -17,9 +17,10 @@ import { useCurrentUser } from 'src/components/CurrentUserContext/CurrentUserCon
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { useTheme } from 'src/components/ThemeProvider/ThemeContext';
 import { ThemeType } from 'src/themes';
-import AppAvatar from 'src/components/AppAvatar/AppAvatar';
 import { useTranslation } from 'react-i18next';
 import { useResizeDetector } from 'react-resize-detector';
+import IndividualAvatar from 'src/components/Individual/IndividualAvatar';
+import { mapUserToIndividual } from 'src/components/Individual/IndividualUtilities';
 
 const MainLayout: React.FC = () => {
 	const { t } = useTranslation();
@@ -139,10 +140,10 @@ const MainLayout: React.FC = () => {
 				>
 					<Button danger type="text" className="avatar-dropdown">
 						<Space>
-							<AppAvatar
-								id={user?.id}
-								firstName={user?.firstName}
-								lastName={user?.lastName}
+							<IndividualAvatar
+								individual={
+									user ? mapUserToIndividual(user) : undefined
+								}
 							/>
 							<FontAwesomeIcon
 								icon={faChevronDown}
